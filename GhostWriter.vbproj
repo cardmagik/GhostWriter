@@ -76,6 +76,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration.vb" />
     <Compile Include="GhostWriterCentralHouseKeeping.vb" />
     <Compile Include="GhostWriterMain.Designer.vb">
       <DependentUpon>GhostWriterMain.vb</DependentUpon>
