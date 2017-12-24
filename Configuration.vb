@@ -15,7 +15,6 @@ Imports System.IO
 '   Sub GetValue(Variable, Default Value) - returns the value - if not present, sets it to the default value passed and returns that - will update the file if not present
 '   Sub SetValue(Variable, Value) - sets the value - if it doesn't exist, it will add it to the list - will update the file with this value
 
-
 Public Class Configuration
 
    Dim MaxVariables = 50
