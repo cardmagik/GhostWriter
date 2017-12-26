@@ -1,4 +1,6 @@
-﻿Imports System
+﻿Imports System.Resources
+
+Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -9,13 +11,13 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("GhostWriter")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("GhostWriter")> 
-<Assembly: AssemblyCopyright("Copyright ©  2017")> 
+<Assembly: AssemblyDescription("Reads Ghosts and produces output based on user entered variables")> 
+<Assembly: AssemblyCompany("ThrillingApps.com")> 
+<Assembly: AssemblyProduct("GhostWriter by Andy Kastelik")> 
+<Assembly: AssemblyCopyright("Copyright ©  2018")> 
 <Assembly: AssemblyTrademark("")> 
 
-<Assembly: ComVisible(False)>
+<Assembly: ComVisible(False)> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("f1cefb74-5015-4d36-8033-4c8561d91867")> 
@@ -32,4 +34,6 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <Assembly: AssemblyVersion("0.0.0.0")> 
-<Assembly: AssemblyFileVersion("2017.12.24")> 
+<Assembly: AssemblyFileVersion("2017.12.25")> 
+
+<Assembly: NeutralResourcesLanguageAttribute("en")> 

@@ -131,9 +131,19 @@ Public Class Configuration
    End Sub
 
    Private Sub SetDefaultFileName()
-      FileName = Directory.GetCurrentDirectory() & "\" & Application.ProductName & ".ini"
-      'MsgBox("Filename is " & FileName)
-      'My.Computer.Clipboard.SetText(FileName)
+
+      Dim RootProgramName As String
+      Dim PosBackSlash As Integer
+      Dim DotLocation As Integer
+
+      PosBackSlash = InStrRev(Application.ExecutablePath, "\")
+      DotLocation = InStr(Application.ExecutablePath, ".")
+
+      ' The Application.Executable Path includes the path, program name and .exe - strip out the path and the .exe to get the program root name
+      RootProgramName = Mid(Application.ExecutablePath, PosBackSlash + 1, DotLocation - PosBackSlash - 1)
+
+      FileName = Directory.GetCurrentDirectory() & "\" & RootProgramName & ".ini"
+
    End Sub
 
    Private Sub LoadFile()
