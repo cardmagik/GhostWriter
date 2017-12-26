@@ -3,9 +3,8 @@
 ' To use:
 '    Dim VersionForm As New frmVersionControl
 '
-'      VersionForm.Tag = "\\Teamsites\sharepointdirectory\"    - this is optional but required for version checking
-'      VersionForm.ShowDialog()
-'
+'      frmVersionControl.CompareVersions(SharePointDirectory)
+
 ' Basics of Logic:
 '     Get a passed directory as the base directory - if blank, it ignores the rest of the processing and returns control to the caller
 '
@@ -37,19 +36,13 @@ Public Class frmVersionControl
 
    Dim UpgradeDirectory As String
    Dim RootProgramName As String
+   Dim ProgramName As String
 
-   Public Sub VersionsAreDifferent(Optional PassedDirectory As String = "") 'As Boolean
-
-      Dim PosBackSlash As Integer
-      Dim DotLocation As Integer
+   Public Sub CompareVersions(Optional PassedDirectory As String = "") 'As Boolean
 
       UpgradeDirectory = PassedDirectory
 
-      PosBackSlash = InStrRev(Application.ExecutablePath, "\")
-      DotLocation = InStr(Application.ExecutablePath, ".")
-
-      ' The Application.Executable Path includes the path, program name and .exe - strip out the path and the .exe to get the program root name
-      RootProgramName = Mid(Application.ExecutablePath, PosBackSlash + 1, DotLocation - PosBackSlash - 1)
+      GetProgramAndRoot()
 
       If UpgradeDirectory = "" Then
          Me.Close()
@@ -72,27 +65,35 @@ Public Class frmVersionControl
 
    End Sub
 
-   ' Search for Program Name and version file in UpgradeDirectory Directory
-   Function FilesFound() As Boolean
+   Sub GetProgramAndRoot()
 
-      Dim ProgramName As String
       Dim PosBackSlash As Integer
+      Dim DotLocation As Integer
 
       PosBackSlash = InStrRev(Application.ExecutablePath, "\")
+      DotLocation = InStr(Application.ExecutablePath, ".")
 
-      ProgramName = Mid(Application.ExecutablePath, PosBackSlash + 1)
+      ' The Application.Executable Path includes the path, program name and .exe - strip out the path and the .exe to get the program root name
+      RootProgramName = Mid(Application.ExecutablePath, PosBackSlash + 1, DotLocation - PosBackSlash - 1)
+
+      ProgramName = RootProgramName & ".exe"
+
+   End Sub
+
+   ' Search for Program Name and version file in UpgradeDirectory Directory
+   Function FilesFound() As Boolean
 
       FQNewExecutable = AddSlashToPath(UpgradeDirectory) & ProgramName
 
       FQVersionFileName = AddSlashToPath(UpgradeDirectory) & RootProgramName & " " & BaseVersionFileName
 
       If File.Exists(FQNewExecutable) = False Then
-         MsgBox("Did not find file " & FQNewExecutable)
+         MsgBox("Version Control cannot update because executable " & ProgramName & " is not present in directory " & UpgradeDirectory)
          Return False
       End If
 
       If File.Exists(FQVersionFileName) = False Then
-         MsgBox("Did not find file " & FQVersionFileName)
+         MsgBox("Version Control cannot compare versions because compare file """ & RootProgramName & " " & BaseVersionFileName & """ is not present in directory " & UpgradeDirectory)
          Return False
       End If
 
@@ -139,7 +140,7 @@ Public Class frmVersionControl
    Function GetVersionFromFile() As String
 
       Dim fileReader As StreamReader
-      
+
       GetVersionFromFile = "No Version Found"
 
       Try
@@ -150,10 +151,11 @@ Public Class frmVersionControl
 
          Me.txtChangeLog.Text = ""
 
+         ' Load remaining records as change log
          While fileReader.EndOfStream = False
             Me.txtChangeLog.Text = Me.txtChangeLog.Text & fileReader.ReadLine() & vbCrLf
          End While
-      
+
          fileReader.Close()
 
       Catch ex As Exception
