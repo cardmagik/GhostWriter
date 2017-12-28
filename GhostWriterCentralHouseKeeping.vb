@@ -1,11 +1,16 @@
-﻿Module GhostWriterCentralHouseKeeping
+﻿Imports System.IO
+
+Module GhostWriterCentralHouseKeeping
 
    Public Settings As Configuration
    Public OnlineOrLocal As String
    Public SharePointDirectory As String
+   Public OnlineAvailable As Boolean
 
    ' Required on start to make sure everything that's needed is initialized
    Public Sub CentralStart()
+
+      OnlineAvailable = GetSharePointDirectoryAndValidate("")
 
       Settings = New Configuration()
 
@@ -24,5 +29,18 @@
 
       Environment.Exit(0)
    End Sub
+
+   ' This routine looks for the SharePoint Directory in the passed fully qualified file location
+   ' If not found, 
+   Function GetSharePointDirectoryAndValidate(SharePointFileNameLocation As String) As Boolean
+
+      If SharePointFileNameLocation = "" Then
+         SharePointFileNameLocation = Directory.GetCurrentDirectory & "SharePointLocation.ini"
+      End If
+
+
+      GetSharePointDirectoryAndValidate = False
+
+   End Function
 
 End Module
