@@ -77,6 +77,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.vb" />
+    <Compile Include="frmDataEntry.Designer.vb">
+      <DependentUpon>frmDataEntry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDataEntry.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditGhost.Designer.vb">
+      <DependentUpon>frmEditGhost.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditGhost.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGhosts.Designer.vb">
+      <DependentUpon>frmGhosts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGhosts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSettingsSharePointLocation.Designer.vb">
+      <DependentUpon>frmSettingsSharePointLocation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettingsSharePointLocation.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GhostWriterCentralHouseKeeping.vb" />
     <Compile Include="GhostWriterMain.Designer.vb">
       <DependentUpon>GhostWriterMain.vb</DependentUpon>
@@ -108,6 +132,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmGhosts.resx">
+      <DependentUpon>frmGhosts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettingsSharePointLocation.resx">
+      <DependentUpon>frmSettingsSharePointLocation.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GhostWriterMain.resx">
       <DependentUpon>GhostWriterMain.vb</DependentUpon>
     </EmbeddedResource>

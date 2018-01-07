@@ -35,6 +35,14 @@ Public Class Configuration
 
       FileName = OptFileName
 
+      ' See if a file exists and load it
+      If FileName = "" Then SetDefaultFileName()
+
+      ' Load file into array if it exists
+      If File.Exists(FileName) Then
+         LoadFile()
+      End If
+
    End Sub
 
    Public Function GetINIFileName() As String
@@ -51,21 +59,10 @@ Public Class Configuration
       ' Set Default Return value if not found
       FoundValue = DefaultValue
 
-      ' See if a file exists and load it
-      If NumSimpleVariables = 0 Then
-         If FileName = "" Then SetDefaultFileName()
-
-         ' Load file into array if it exists
-         If File.Exists(FileName) Then
-            LoadFile()
-         End If
-      End If
-
       ' If the number of variables is greater than 0, try to find the value
       If NumSimpleVariables > 0 Then
          UseArrayIndex = FindVariableIndex(Variable)
          'MsgBox("array index returned is " & UseArrayIndex)
-
       End If
 
       ' If it doesn't exist or there are no variables yet, add it and the default to the array  

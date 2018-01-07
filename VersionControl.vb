@@ -101,21 +101,6 @@ Public Class frmVersionControl
 
    End Function
 
-   Private Function AddSlashToPath(InputPath As String) As String
-
-      Dim OutputPath As String
-
-      OutputPath = Trim(InputPath)
-
-      If Mid(OutputPath, Len(OutputPath), 1) = "\" Or Mid(OutputPath, Len(OutputPath), 1) = "/" Then
-      Else
-         OutputPath = OutputPath & "\"
-      End If
-
-      Return OutputPath
-
-   End Function
-
    ' Compare current version to value in file version.txt in SharePoint directory - return true if they differ
    Private Function VersionsAreTheSame() As Boolean
 

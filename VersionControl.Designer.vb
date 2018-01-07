@@ -72,7 +72,7 @@ Partial Class frmVersionControl
       Me.txtChangeLog.BackColor = System.Drawing.SystemColors.Info
       Me.txtChangeLog.Enabled = False
       Me.txtChangeLog.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-      Me.txtChangeLog.ForeColor = System.Drawing.Color.MediumBlue
+      Me.txtChangeLog.ForeColor = System.Drawing.Color.Blue
       Me.txtChangeLog.Location = New System.Drawing.Point(187, 156)
       Me.txtChangeLog.Multiline = True
       Me.txtChangeLog.Name = "txtChangeLog"
@@ -80,7 +80,6 @@ Partial Class frmVersionControl
       Me.txtChangeLog.Size = New System.Drawing.Size(446, 191)
       Me.txtChangeLog.TabIndex = 4
       Me.txtChangeLog.Text = "Change Log"
-      Me.txtChangeLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
       '
       'btnUpgrade
       '

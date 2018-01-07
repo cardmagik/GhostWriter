@@ -27,7 +27,10 @@ Partial Class frmGhostWriter
       Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
       Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
       Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+      Me.SharePointDirectoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
       Me.btnExit = New System.Windows.Forms.Button()
+      Me.pnlHauntedHouses = New System.Windows.Forms.Panel()
+      Me.btnOnlineOrLocalToggle = New System.Windows.Forms.Button()
       Me.MenuStrip1.SuspendLayout()
       Me.SuspendLayout()
       '
@@ -51,15 +54,22 @@ Partial Class frmGhostWriter
       'ExitToolStripMenuItem
       '
       Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-      Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+      Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(95, 22)
       Me.ExitToolStripMenuItem.Text = "Exit"
       '
       'SettingsToolStripMenuItem
       '
+      Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SharePointDirectoryToolStripMenuItem})
       Me.SettingsToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
       Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
       Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(65, 20)
       Me.SettingsToolStripMenuItem.Text = "Settings"
+      '
+      'SharePointDirectoryToolStripMenuItem
+      '
+      Me.SharePointDirectoryToolStripMenuItem.Name = "SharePointDirectoryToolStripMenuItem"
+      Me.SharePointDirectoryToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
+      Me.SharePointDirectoryToolStripMenuItem.Text = "SharePoint Directory"
       '
       'btnExit
       '
@@ -74,14 +84,36 @@ Partial Class frmGhostWriter
       Me.btnExit.Text = "E&xit"
       Me.btnExit.UseVisualStyleBackColor = False
       '
+      'pnlHauntedHouses
+      '
+      Me.pnlHauntedHouses.AutoScroll = True
+      Me.pnlHauntedHouses.Location = New System.Drawing.Point(23, 69)
+      Me.pnlHauntedHouses.Name = "pnlHauntedHouses"
+      Me.pnlHauntedHouses.Size = New System.Drawing.Size(733, 389)
+      Me.pnlHauntedHouses.TabIndex = 4
+      '
+      'btnOnlineOrLocalToggle
+      '
+      Me.btnOnlineOrLocalToggle.BackColor = System.Drawing.Color.Blue
+      Me.btnOnlineOrLocalToggle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+      Me.btnOnlineOrLocalToggle.ForeColor = System.Drawing.Color.White
+      Me.btnOnlineOrLocalToggle.Location = New System.Drawing.Point(645, 27)
+      Me.btnOnlineOrLocalToggle.Name = "btnOnlineOrLocalToggle"
+      Me.btnOnlineOrLocalToggle.Size = New System.Drawing.Size(111, 32)
+      Me.btnOnlineOrLocalToggle.TabIndex = 5
+      Me.btnOnlineOrLocalToggle.Text = "Unknown"
+      Me.btnOnlineOrLocalToggle.UseVisualStyleBackColor = False
+      '
       'frmGhostWriter
       '
       Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
       Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
       Me.BackColor = System.Drawing.Color.SeaShell
       Me.ClientSize = New System.Drawing.Size(784, 526)
+      Me.Controls.Add(Me.btnOnlineOrLocalToggle)
       Me.Controls.Add(Me.btnExit)
       Me.Controls.Add(Me.MenuStrip1)
+      Me.Controls.Add(Me.pnlHauntedHouses)
       Me.DataBindings.Add(New System.Windows.Forms.Binding("Location", Global.GhostWriter.My.MySettings.Default, "LastFormPosition", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
       Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
       Me.Location = Global.GhostWriter.My.MySettings.Default.LastFormPosition
@@ -99,5 +131,8 @@ Partial Class frmGhostWriter
    Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
    Friend WithEvents SettingsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
    Friend WithEvents btnExit As System.Windows.Forms.Button
+   Friend WithEvents SharePointDirectoryToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+   Friend WithEvents pnlHauntedHouses As System.Windows.Forms.Panel
+   Friend WithEvents btnOnlineOrLocalToggle As System.Windows.Forms.Button
 
 End Class
