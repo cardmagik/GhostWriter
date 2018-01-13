@@ -68,9 +68,10 @@ Module GhostWriterCentralHouseKeeping
          SharePointFileNameLocation = AddSlashToPath(Directory.GetCurrentDirectory) & "SharePointLocation.ini"
       End If
 
+      SharePointSettings = New Configuration(SharePointFileNameLocation)
+
       If File.Exists(SharePointFileNameLocation) Then
          ' Get the directory name from the sharepoint directory file
-         SharePointSettings = New Configuration(SharePointFileNameLocation)
 
          SharePointDirectory = SharePointSettings.GetValue(SharePointDirectorySetting, "")
 
