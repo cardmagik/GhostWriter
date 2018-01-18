@@ -124,4 +124,19 @@
   <data name="GhostWriter1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GhostWriter.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HauntedHouseBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HauntedHouseBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HauntedHouseGreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HauntedHouseGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HauntedHousePurple" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HauntedHousePurple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HauntedHouseRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HauntedHouseRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HauntedHouseYellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HauntedHouseYellow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

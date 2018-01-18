@@ -22,6 +22,7 @@ Partial Class frmGhostWriter
    'Do not modify it using the code editor.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
+      Me.components = New System.ComponentModel.Container()
       Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmGhostWriter))
       Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
       Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -31,7 +32,14 @@ Partial Class frmGhostWriter
       Me.btnExit = New System.Windows.Forms.Button()
       Me.pnlHauntedHouses = New System.Windows.Forms.Panel()
       Me.btnOnlineOrLocalToggle = New System.Windows.Forms.Button()
+      Me.ctxtMenuHauntedHouse = New System.Windows.Forms.ContextMenuStrip(Me.components)
+      Me.OpenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+      Me.PropertiesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+      Me.CopyHouseToLocalToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+      Me.CopyHouseToSharePointToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+      Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
       Me.MenuStrip1.SuspendLayout()
+      Me.ctxtMenuHauntedHouse.SuspendLayout()
       Me.SuspendLayout()
       '
       'MenuStrip1
@@ -104,6 +112,42 @@ Partial Class frmGhostWriter
       Me.btnOnlineOrLocalToggle.Text = "Unknown"
       Me.btnOnlineOrLocalToggle.UseVisualStyleBackColor = False
       '
+      'ctxtMenuHauntedHouse
+      '
+      Me.ctxtMenuHauntedHouse.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenToolStripMenuItem, Me.PropertiesToolStripMenuItem, Me.CopyHouseToLocalToolStripMenuItem, Me.CopyHouseToSharePointToolStripMenuItem, Me.DeleteToolStripMenuItem})
+      Me.ctxtMenuHauntedHouse.Name = "ContextMenuStrip1"
+      Me.ctxtMenuHauntedHouse.Size = New System.Drawing.Size(214, 136)
+      '
+      'OpenToolStripMenuItem
+      '
+      Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
+      Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
+      Me.OpenToolStripMenuItem.Text = "Open"
+      '
+      'PropertiesToolStripMenuItem
+      '
+      Me.PropertiesToolStripMenuItem.Name = "PropertiesToolStripMenuItem"
+      Me.PropertiesToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
+      Me.PropertiesToolStripMenuItem.Text = "Properties"
+      '
+      'CopyHouseToLocalToolStripMenuItem
+      '
+      Me.CopyHouseToLocalToolStripMenuItem.Name = "CopyHouseToLocalToolStripMenuItem"
+      Me.CopyHouseToLocalToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
+      Me.CopyHouseToLocalToolStripMenuItem.Text = "Copy House to Local"
+      '
+      'CopyHouseToSharePointToolStripMenuItem
+      '
+      Me.CopyHouseToSharePointToolStripMenuItem.Name = "CopyHouseToSharePointToolStripMenuItem"
+      Me.CopyHouseToSharePointToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
+      Me.CopyHouseToSharePointToolStripMenuItem.Text = "Copy House to SharePoint"
+      '
+      'DeleteToolStripMenuItem
+      '
+      Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+      Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
+      Me.DeleteToolStripMenuItem.Text = "Delete"
+      '
       'frmGhostWriter
       '
       Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -122,6 +166,7 @@ Partial Class frmGhostWriter
       Me.Text = "GhostWriter"
       Me.MenuStrip1.ResumeLayout(False)
       Me.MenuStrip1.PerformLayout()
+      Me.ctxtMenuHauntedHouse.ResumeLayout(False)
       Me.ResumeLayout(False)
       Me.PerformLayout()
 
@@ -134,5 +179,11 @@ Partial Class frmGhostWriter
    Friend WithEvents SharePointDirectoryToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
    Friend WithEvents pnlHauntedHouses As System.Windows.Forms.Panel
    Friend WithEvents btnOnlineOrLocalToggle As System.Windows.Forms.Button
+   Friend WithEvents ctxtMenuHauntedHouse As System.Windows.Forms.ContextMenuStrip
+   Friend WithEvents OpenToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+   Friend WithEvents PropertiesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+   Friend WithEvents CopyHouseToLocalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+   Friend WithEvents CopyHouseToSharePointToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+   Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

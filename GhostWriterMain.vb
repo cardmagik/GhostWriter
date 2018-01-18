@@ -5,10 +5,8 @@ Public Class frmGhostWriter
    Structure HHDirectoriesStructure
       Dim Name As String
       Dim ColorName As String
-      Dim BackgroundColor As Color
-      Dim ForegroundColor As Color
-      Dim BorderColor As Color
       Dim FullyQualifiedLocation As String
+      Dim HauntedHouseButton As Button
    End Structure
 
    Dim MaxHHDirectories As Integer = 50
@@ -17,15 +15,20 @@ Public Class frmGhostWriter
 
    Dim HauntedHouseDirectory As String
 
-   Structure HauntedHouseColorStructure
-      Dim ColorName As String
-      Dim BackgroundColor As Color
-      Dim ForegroundColor As Color
-      Dim BorderColor As Color
-   End Structure
+   Dim HauntedHouseColors() As String = {"Blue", "Red", "Yellow", "Green", "Purple"}
 
-   Dim NumHauntedHouseColors As Integer = 0
-   Dim HauntedHouseColors(30) As HauntedHouseColorStructure
+   Const HouseWidth = 100
+   Const HouseHeight = 100
+   Const HeightInterval = 10
+   Const WidthInterval = 10
+
+   Const InitialTopStartingPosition = 20
+   Const InitialLeftStartingPosition = 20
+
+   Dim HouseTopLocation As Integer
+   Dim HouseLeftLocation As Integer
+
+   Dim SelectedHauntedHouseIndex As Integer
 
    Public GhostCounter As Integer = 0
 
@@ -39,7 +42,6 @@ Public Class frmGhostWriter
       ' Toggle button to last online or local settings
       SetOnlineOrLocalButton(OnlineOrLocal)
 
-      PrepareHauntedHouseColors()
       LoadHauntedHouses()
 
    End Sub
@@ -79,64 +81,35 @@ Public Class frmGhostWriter
 
    Sub SetOnlineOrLocalButton(SetButtonTo As String)
 
+      CopyHouseToLocalToolStripMenuItem.Visible = True
+      CopyHouseToSharePointToolStripMenuItem.Visible = True
+
       If SetButtonTo = OnlineOrLocalLocalValue Then
          btnOnlineOrLocalToggle.Text = SetButtonTo
          btnOnlineOrLocalToggle.BackColor = Color.Blue
          HauntedHouseDirectory = Directory.GetCurrentDirectory
+         CopyHouseToLocalToolStripMenuItem.Visible = False
       Else
          btnOnlineOrLocalToggle.Text = SetButtonTo
          btnOnlineOrLocalToggle.BackColor = Color.Red
          HauntedHouseDirectory = SharePointDirectory
+         CopyHouseToSharePointToolStripMenuItem.Visible = False
       End If
 
       Settings.SetValue(OnlineOrLocalVariableName, SetButtonTo)
 
    End Sub
 
-   'Private Sub btnFakeDirectory1_Click(sender As Object, e As EventArgs)
-
-   '   Dim ghostForm As New frmGhosts
-   '   GhostCounter = GhostCounter + 1
-   '   ghostForm.Text = "Ghost " & GhostCounter
-   '   ghostForm.Tag = GhostCounter
-   '   ghostForm.Show()
-
-   'End Sub
-
-   'Private Sub btnFakeDirectory2_Click(sender As Object, e As EventArgs)
-
-   '   Dim ghostForm As New frmGhosts
-   '   GhostCounter = GhostCounter + 1
-   '   ghostForm.Text = "Ghost " & GhostCounter
-   '   ghostForm.Tag = GhostCounter
-   '   ghostForm.Show()
-   'End Sub
-
-   'Private Sub btnWhichFormsOpen_Click(sender As Object, e As EventArgs)
-   '   For Each frm As Form In Application.OpenForms
-   '      MsgBox(frm.Name & " $" & frm.Text & "$" & " " & frm.Tag)
-
-
-   '   Next
-   'End Sub
-
-   'Private Sub btnGotoGhost_Click(sender As Object, e As EventArgs)
-
-   '   For Each frm As Form In Application.OpenForms
-   '      'If frm.Text = "Ghost 1" Then
-   '      If frm.Tag = 1 Then
-   '         frm.Activate()
-   '      End If
-
-   '   Next
-
-   'End Sub
-
    Sub LoadHauntedHouses()
 
       Dim HHDirectory As String
       Dim ColorIndex As Integer
       Dim HauntedHouseName As String
+
+      HouseTopLocation = 0
+      HouseLeftLocation = 0
+
+      pnlHauntedHouses.Controls.Clear()
 
       NumHHDirectories = 0
 
@@ -154,8 +127,6 @@ Public Class frmGhostWriter
          End If
 
       Next
-
-      MsgBox("Haunted House 1 " & HauntedHouses(1).Name)
 
    End Sub
 
@@ -198,9 +169,9 @@ Public Class frmGhostWriter
       PossibleColor = GetLastWord(HauntedHouseName)
       ColorIndex = FindColor(PossibleColor)
 
-      ' If not found, it's not a color - default to color index 1
-      If ColorIndex = 0 Then
-         ColorIndex = 1
+      ' If not found, it's not a color - default to the first color and leave the name as is
+      If ColorIndex = -1 Then
+         ColorIndex = 0
       Else
          ' If it is a color, strip the color from the end - whatever is left is the name of the Hauntedhouse
          HauntedHouseName = Trim(Mid(HauntedHouseName, 1, Len(HauntedHouseName) - Len(PossibleColor)))
@@ -232,6 +203,7 @@ Public Class frmGhostWriter
             Exit Sub
          End If
       Next
+
       NumHHDirectories = NumHHDirectories + 1
       If NumHHDirectories > MaxHHDirectories Then
          MaxHHDirectories = MaxHHDirectories + 50
@@ -239,37 +211,136 @@ Public Class frmGhostWriter
       End If
 
       HauntedHouses(NumHHDirectories).Name = HauntedHouseName
-      HauntedHouses(NumHHDirectories).BackgroundColor = HauntedHouseColors(Colorindex).BackgroundColor
-      HauntedHouses(NumHHDirectories).ForegroundColor = HauntedHouseColors(Colorindex).ForegroundColor
-      HauntedHouses(NumHHDirectories).BorderColor = HauntedHouseColors(Colorindex).BorderColor
-      HauntedHouses(NumHHDirectories).ColorName = HauntedHouseColors(Colorindex).ColorName
+      HauntedHouses(NumHHDirectories).ColorName = HauntedHouseColors(Colorindex)
 
-   End Sub
+      AddHauntedHouseButton(NumHHDirectories)
 
-   Sub PrepareHauntedHouseColors()
-      AddHauntedHouseColor("Blue", Color.Blue, Color.Yellow, Color.Black)
-      AddHauntedHouseColor("Red", Color.Red, Color.White, Color.Black)
-      AddHauntedHouseColor("Green", Color.Green, Color.Yellow, Color.Black)
-      AddHauntedHouseColor("Yellow", Color.Yellow, Color.Blue, Color.Black)
-      AddHauntedHouseColor("Purple", Color.Purple, Color.Yellow, Color.Black)
-      AddHauntedHouseColor("Black", Color.Black, Color.Black, Color.White)
-      AddHauntedHouseColor("Pink", Color.Pink, Color.Blue, Color.Black)
-   End Sub
-
-   Sub AddHauntedHouseColor(ColorName As String, BackgroundColor As Color, ForegroundColor As Color, BorderColor As Color)
-      NumHauntedHouseColors = NumHauntedHouseColors + 1
-      HauntedHouseColors(NumHauntedHouseColors).ColorName = ColorName
-      HauntedHouseColors(NumHauntedHouseColors).BackgroundColor = BackgroundColor
-      HauntedHouseColors(NumHauntedHouseColors).ForegroundColor = ForegroundColor
-      HauntedHouseColors(NumHauntedHouseColors).BorderColor = BorderColor
    End Sub
 
    Function FindColor(ColorName As String) As Integer
+
       Dim i As Integer
 
-      FindColor = 0
-      For i = 1 To NumHauntedHouseColors
-         If UCase(HauntedHouseColors(i).ColorName) = UCase(ColorName) Then Return i
+      FindColor = -1
+      For i = 0 To HauntedHouseColors.GetUpperBound(0)
+         If UCase(HauntedHouseColors(i)) = UCase(ColorName) Then Return i
       Next
+
    End Function
+
+   Sub AddHauntedHouseButton(HouseNumber As Integer)
+
+      Dim PicName As String
+
+      CalculateHousePosition()
+
+      HauntedHouses(HouseNumber).HauntedHouseButton = New Button
+
+      With HauntedHouses(HouseNumber).HauntedHouseButton
+
+         .Width = HouseWidth
+         .Height = HouseHeight
+         .Top = HouseTopLocation
+         .Left = HouseLeftLocation
+         .ForeColor = Color.White
+         .Font = New Font(.Font.FontFamily, AdjustFont(HauntedHouses(HouseNumber).Name), FontStyle.Bold)
+         .Text = HauntedHouses(HouseNumber).Name
+         .Tag = HouseNumber
+         PicName = "HauntedHouse" & HauntedHouses(HouseNumber).ColorName
+         .Image = My.Resources.ResourceManager.GetObject(PicName)
+
+      End With
+
+      pnlHauntedHouses.Controls.Add(HauntedHouses(HouseNumber).HauntedHouseButton)
+
+      AddHandler HauntedHouses(HouseNumber).HauntedHouseButton.MouseUp, AddressOf Me.ClickHouse
+
+   End Sub
+
+   Private Sub ClickHouse(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseUp
+
+      If Not TypeOf (sender) Is Button Then
+         Exit Sub
+      End If
+
+      SelectedHauntedHouseIndex = sender.tag
+
+      'Works with both buttons
+      Select Case e.Button
+         Case Is = Windows.Forms.MouseButtons.Left
+            'MsgBox("Left mouse button - house index is " & SelectedHauntedHouseIndex)
+            OpenSelectedHauntedHouse()
+
+         Case Is = Windows.Forms.MouseButtons.Right
+            'MsgBox("Right mouse button")
+            Me.ctxtMenuHauntedHouse().Show(MousePosition.X, MousePosition.Y)
+
+      End Select
+
+   End Sub
+
+   Function AdjustFont(HouseName As String) As Integer
+
+      AdjustFont = 14
+
+      Select Case Len(HouseName)
+         Case Is <= 1
+            AdjustFont = 24
+         Case Is <= 2
+            AdjustFont = 20
+         Case Is <= 4
+            AdjustFont = 18
+         Case Is <= 5
+            AdjustFont = 16
+         Case Is <= 6
+            AdjustFont = 14
+         Case Is <= 8
+            AdjustFont = 12
+         Case Is <= 10
+            AdjustFont = 10
+         Case Is <= 12
+            AdjustFont = 8
+         Case Else
+            AdjustFont = 6
+      End Select
+   End Function
+
+   Sub CalculateHousePosition()
+
+      If HouseTopLocation = 0 Then
+         HouseTopLocation = InitialTopStartingPosition
+         HouseLeftLocation = InitialLeftStartingPosition
+      Else
+         HouseLeftLocation = HouseLeftLocation + HouseWidth + WidthInterval
+         If HouseLeftLocation + HouseWidth > pnlHauntedHouses.Width Then
+            HouseLeftLocation = InitialLeftStartingPosition
+            HouseTopLocation = HouseTopLocation + HouseHeight + HeightInterval
+         End If
+      End If
+
+   End Sub
+
+   Sub OpenSelectedHauntedHouse()
+      MsgBox("Opening House " & SelectedHauntedHouseIndex)
+   End Sub
+
+   Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem.Click
+      OpenSelectedHauntedHouse()
+   End Sub
+
+   Private Sub PropertiesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PropertiesToolStripMenuItem.Click
+      MsgBox("Properties for house " & SelectedHauntedHouseIndex)
+   End Sub
+
+   Private Sub CopyHouseToLocalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToLocalToolStripMenuItem.Click
+      MsgBox("Copying SharePoint house " & SelectedHauntedHouseIndex & " to Local")
+   End Sub
+
+   Private Sub CopyHouseToSharePointToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToSharePointToolStripMenuItem.Click
+      MsgBox("Copying local house " & SelectedHauntedHouseIndex & " to SharePoint")
+   End Sub
+
+   Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
+      MsgBox("Deleting house " & SelectedHauntedHouseIndex)
+   End Sub
 End Class
