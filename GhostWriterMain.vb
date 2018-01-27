@@ -37,6 +37,8 @@ Public Class frmGhostWriter
       ' Set form name to have version number
       Me.Text = Me.Text & " " & Application.ProductVersion
 
+      ClearFormMessage()
+
       CentralStart()
 
       ' Toggle button to last online or local settings
@@ -46,30 +48,42 @@ Public Class frmGhostWriter
 
    End Sub
 
+   Sub ClearFormMessage()
+      lblHauntedHouseFormMessage.Text = ""
+      lblHauntedHouseFormMessage.Visible = False
+   End Sub
+
+   Sub SetFormMessage(Message As String)
+      lblHauntedHouseFormMessage.Text = Message
+      lblHauntedHouseFormMessage.Visible = True
+   End Sub
+
    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+      ClearFormMessage()
       CentralExit()
    End Sub
 
    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
+      ClearFormMessage()
       CentralExit()
    End Sub
 
    Private Sub SharePointDirectoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SharePointDirectoryToolStripMenuItem.Click
-
+      ClearFormMessage()
       ' Show the settings entry as modal - the model showdialog is inside the form code
       frmSettingsSharePointLocation.GetSharePointDirectory(SharePointDirectory)
 
    End Sub
 
    Private Sub btnOnlineOrLocalToggle_Click(sender As Object, e As EventArgs) Handles btnOnlineOrLocalToggle.Click
-
+      ClearFormMessage()
       If OnlineOrLocal = OnlineOrLocalOnlineValue Then
          OnlineOrLocal = OnlineOrLocalLocalValue
       Else
          If OnlineAvailable Then
             OnlineOrLocal = OnlineOrLocalOnlineValue
          Else
-            MsgBox("Online directory was not found" & vbCrLf & SharePointDirectory)
+            MsgBox("SharePoint is not available" & vbCrLf & "Directory " & SharePointDirectory)
          End If
       End If
 
@@ -81,8 +95,15 @@ Public Class frmGhostWriter
 
    Sub SetOnlineOrLocalButton(SetButtonTo As String)
 
-      CopyHouseToLocalToolStripMenuItem.Visible = True
-      CopyHouseToSharePointToolStripMenuItem.Visible = True
+      If OnlineAvailable Then
+         lblClickToToggle.Visible = True
+         CopyHouseToLocalToolStripMenuItem.Visible = True
+         CopyHouseToSharePointToolStripMenuItem.Visible = True
+      Else
+         lblClickToToggle.Visible = False
+         CopyHouseToLocalToolStripMenuItem.Visible = False
+         CopyHouseToSharePointToolStripMenuItem.Visible = False
+      End If
 
       If SetButtonTo = OnlineOrLocalLocalValue Then
          btnOnlineOrLocalToggle.Text = SetButtonTo
@@ -259,6 +280,8 @@ Public Class frmGhostWriter
 
    Private Sub ClickHouse(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseUp
 
+      ClearFormMessage()
+
       If Not TypeOf (sender) Is Button Then
          Exit Sub
       End If
@@ -325,22 +348,28 @@ Public Class frmGhostWriter
    End Sub
 
    Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem.Click
+      ClearFormMessage()
       OpenSelectedHauntedHouse()
    End Sub
 
    Private Sub PropertiesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PropertiesToolStripMenuItem.Click
+      ClearFormMessage()
       MsgBox("Properties for house " & SelectedHauntedHouseIndex)
    End Sub
 
    Private Sub CopyHouseToLocalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToLocalToolStripMenuItem.Click
+      ClearFormMessage()
       MsgBox("Copying SharePoint house " & SelectedHauntedHouseIndex & " to Local")
    End Sub
 
    Private Sub CopyHouseToSharePointToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToSharePointToolStripMenuItem.Click
+      ClearFormMessage()
       MsgBox("Copying local house " & SelectedHauntedHouseIndex & " to SharePoint")
    End Sub
 
-   Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
-      MsgBox("Deleting house " & SelectedHauntedHouseIndex)
+   Private Sub DemolishHauntedHouseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DemolishHauntedHouseToolStripMenuItem.Click
+      ClearFormMessage()
+      'MsgBox("Demolish house " & SelectedHauntedHouseIndex)
+      SetFormMessage("House " & SelectedHauntedHouseIndex & " Demolished ")
    End Sub
 End Class

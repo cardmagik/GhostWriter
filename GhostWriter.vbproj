@@ -95,6 +95,12 @@
     <Compile Include="frmGhosts.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmHauntedHouseProperties.Designer.vb">
+      <DependentUpon>frmHauntedHouseProperties.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmHauntedHouseProperties.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSettingsSharePointLocation.Designer.vb">
       <DependentUpon>frmSettingsSharePointLocation.vb</DependentUpon>
     </Compile>
@@ -109,6 +115,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalRoutines.vb" />
+    <Compile Include="HintTextBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -134,6 +143,9 @@
   <ItemGroup>
     <EmbeddedResource Include="frmGhosts.resx">
       <DependentUpon>frmGhosts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmHauntedHouseProperties.resx">
+      <DependentUpon>frmHauntedHouseProperties.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsSharePointLocation.resx">
       <DependentUpon>frmSettingsSharePointLocation.vb</DependentUpon>
