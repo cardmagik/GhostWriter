@@ -24,7 +24,7 @@ Partial Class frmHauntedHouseProperties
     Private Sub InitializeComponent()
       Me.lblHauntedHouseName = New System.Windows.Forms.Label()
       Me.lstHauntedHouseColorSelection = New System.Windows.Forms.ListBox()
-      Me.txtHauntedHouseName = New testformHauntedHouseProperties.HintTextBox()
+      Me.txtHauntedHouseName = New HintTextBox()
       Me.SuspendLayout()
       '
       'lblHauntedHouseName
@@ -69,5 +69,5 @@ Partial Class frmHauntedHouseProperties
    End Sub
    Friend WithEvents lblHauntedHouseName As System.Windows.Forms.Label
    Friend WithEvents lstHauntedHouseColorSelection As System.Windows.Forms.ListBox
-   Friend WithEvents txtHauntedHouseName As testformHauntedHouseProperties.HintTextBox
+   Friend WithEvents txtHauntedHouseName As HintTextBox
 End Class

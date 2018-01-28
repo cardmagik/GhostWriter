@@ -30,8 +30,6 @@ Public Class frmGhostWriter
 
    Dim SelectedHauntedHouseIndex As Integer
 
-   Public GhostCounter As Integer = 0
-
    Private Sub frmGhostWriter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
       ' Set form name to have version number
@@ -371,5 +369,9 @@ Public Class frmGhostWriter
       ClearFormMessage()
       'MsgBox("Demolish house " & SelectedHauntedHouseIndex)
       SetFormMessage("House " & SelectedHauntedHouseIndex & " Demolished ")
+   End Sub
+
+   Private Sub btnBuildNewHauntedHouse_Click(sender As Object, e As EventArgs) Handles btnBuildNewHauntedHouse.Click
+      frmHauntedHouseProperties.Show()
    End Sub
 End Class
