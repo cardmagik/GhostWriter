@@ -249,6 +249,8 @@ Public Class frmGhostWriter
 
       propForm = New frmHauntedHouseProperties(-1)
 
+      'MsgBox("Tag returned is " & propForm.Tag)
+
       If propForm.Tag = -1 Then Exit Sub
 
       PopulateHauntedHouseButtons()
@@ -266,6 +268,9 @@ Public Class frmGhostWriter
       ClearFormMessage()
 
       propForm = New frmHauntedHouseProperties(SelectedHauntedHouseIndex)
+
+
+      ' MsgBox("Tag returned is " & propForm.Tag)
 
       If propForm.Tag = -1 Then Exit Sub
 

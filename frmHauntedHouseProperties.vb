@@ -21,6 +21,8 @@ Public Class frmHauntedHouseProperties
 
       lblErrorMessage.Text = ""
 
+      Me.Tag = -1
+
       Me.ShowDialog()
 
    End Sub
@@ -108,12 +110,14 @@ Public Class frmHauntedHouseProperties
       OldDirectoryName = HauntedHouses(SelectedHauntedHouseIndex).FullyQualifiedLocation
 
       If RenameDirectory(OldDirectoryName, NewDirectoryName) = False Then
-         lblErrorMessage.Text = "Error Renaming directory - perhaps a file is open"
+         lblErrorMessage.Text = "Error renaming Haunted House - perhaps a file is open"
+         Exit Sub
       End If
 
       LoadHauntedHouses(HauntedHouseDirectory)
 
       Me.Tag = SelectedHauntedHouseIndex
+
       Me.Close()
 
    End Sub
@@ -134,22 +138,14 @@ Public Class frmHauntedHouseProperties
 
       e.DrawBackground()
 
-      'MsgBox("Selected Color is " & SelectedColor)
-
       If lstHauntedHouseColorSelection.Items(e.Index).ToString() = SelectedColor Then
          e.Graphics.FillRectangle(Brushes.DodgerBlue, e.Bounds)
       End If
 
       e.Graphics.DrawString(lstHauntedHouseColorSelection.Items(e.Index).ToString(), e.Font, Brushes.Black, New System.Drawing.PointF(e.Bounds.X, e.Bounds.Y))
       e.DrawFocusRectangle()
-   End Sub
 
-   Public WriteOnly Property Colors() As String()
-      Set(Value As String())
-         MsgBox("Received string " & Value(1))
-         SelectedColor = Value(2)
-      End Set
-   End Property
+   End Sub
 
    Private Sub lstHauntedHouseColorSelection_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstHauntedHouseColorSelection.SelectedIndexChanged
 
@@ -158,12 +154,7 @@ Public Class frmHauntedHouseProperties
 
    End Sub
 
-   Private Sub XBoxClicked(sender As Object, e As EventArgs) Handles Me.FormClosing
-      Me.Tag = -1
-   End Sub
-
    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-
       Me.Tag = -1
       Me.Close()
    End Sub

@@ -46,35 +46,44 @@ Module GlobalRoutines
 
       RenameDirectory = True
 
-      'Debug.Print("Renaming " & OldDirectoryName & " to " & NewDirectoryName)
+      Debug.Print("Renaming " & OldDirectoryName & " to " & NewDirectoryName)
 
       ' Same name with different case is not allowed
       If UCase(OldDirectoryName) = UCase(NewDirectoryName) Then
          TempDirectoryName = NewDirectoryName & " Temp"
          If SwitchNames(OldDirectoryName, TempDirectoryName) = False Then
-            MsgBox("Error during stage 1 of 3-way rename of " & vbCrLf & OldDirectoryName & " to " & vbCrLf & NewDirectoryName)
+            'MsgBox("Error during stage 1 of 3-way rename of " & vbCrLf & OldDirectoryName & " to " & vbCrLf & NewDirectoryName)
             Return False
          End If
          OldDirectoryName = TempDirectoryName
       End If
 
-      Return SwitchNames(OldDirectoryName, NewDirectoryName)
+      If SwitchNames(OldDirectoryName, NewDirectoryName) = False Then
+         'MsgBox("Switchnames returned false")
+         Return False
+      End If
 
    End Function
 
    Function SwitchNames(OldDirectoryName As String, NewDirectoryName As String) As Boolean
 
+      'Debug.Print("Switching " & OldDirectoryName & " to " & NewDirectoryName)
+
       SwitchNames = True
 
       Try
          'FileIO.FileSystem.RenameDirectory(OldDirectoryName, NewDirectoryName)
+         'Debug.Print("About to do move")
+
          Directory.Move(OldDirectoryName, NewDirectoryName)
 
+         'Debug.Print("done move")
       Catch ex As Exception
 
-         Debug.Print("My Error " & ex.Message)
-         Return False
+         'Debug.Print("My Error " & ex.Message)
+         'Debug.Print("Still here")
 
+         Return False
       End Try
 
    End Function
