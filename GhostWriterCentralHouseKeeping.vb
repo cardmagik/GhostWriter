@@ -16,8 +16,6 @@ Module GhostWriterCentralHouseKeeping
    Public Const OnlineOrLocalOnlineValue = "Online"
    Public Const OnlineOrLocalLocalValue = "Local"
 
-   Public HauntedHouseDirectory As String
-
    ' Required on start to make sure everything that's needed is initialized
    Public Sub CentralStart()
 

@@ -115,6 +115,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalRoutines.vb" />
+    <Compile Include="HauntedHouseRoutines.vb" />
     <Compile Include="HintTextBox.vb">
       <SubType>Component</SubType>
     </Compile>

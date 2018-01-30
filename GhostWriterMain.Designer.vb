@@ -65,7 +65,7 @@ Partial Class frmGhostWriter
       'ExitToolStripMenuItem
       '
       Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-      Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(95, 22)
+      Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
       Me.ExitToolStripMenuItem.Text = "Exit"
       '
       'SettingsToolStripMenuItem
@@ -91,7 +91,7 @@ Partial Class frmGhostWriter
       Me.btnExit.Location = New System.Drawing.Point(679, 481)
       Me.btnExit.Name = "btnExit"
       Me.btnExit.Size = New System.Drawing.Size(93, 33)
-      Me.btnExit.TabIndex = 1
+      Me.btnExit.TabIndex = 3
       Me.btnExit.Text = "E&xit"
       Me.btnExit.UseVisualStyleBackColor = False
       '
@@ -111,7 +111,7 @@ Partial Class frmGhostWriter
       Me.btnOnlineOrLocalToggle.Location = New System.Drawing.Point(645, 36)
       Me.btnOnlineOrLocalToggle.Name = "btnOnlineOrLocalToggle"
       Me.btnOnlineOrLocalToggle.Size = New System.Drawing.Size(111, 32)
-      Me.btnOnlineOrLocalToggle.TabIndex = 5
+      Me.btnOnlineOrLocalToggle.TabIndex = 1
       Me.btnOnlineOrLocalToggle.Text = "Unknown"
       Me.btnOnlineOrLocalToggle.UseVisualStyleBackColor = False
       '
@@ -163,7 +163,7 @@ Partial Class frmGhostWriter
       '
       'lblHauntedHouseFormMessage
       '
-      Me.lblHauntedHouseFormMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+      Me.lblHauntedHouseFormMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
       Me.lblHauntedHouseFormMessage.ForeColor = System.Drawing.Color.Red
       Me.lblHauntedHouseFormMessage.Location = New System.Drawing.Point(23, 461)
       Me.lblHauntedHouseFormMessage.Name = "lblHauntedHouseFormMessage"
@@ -181,7 +181,7 @@ Partial Class frmGhostWriter
       Me.btnBuildNewHauntedHouse.Location = New System.Drawing.Point(23, 481)
       Me.btnBuildNewHauntedHouse.Name = "btnBuildNewHauntedHouse"
       Me.btnBuildNewHauntedHouse.Size = New System.Drawing.Size(234, 33)
-      Me.btnBuildNewHauntedHouse.TabIndex = 8
+      Me.btnBuildNewHauntedHouse.TabIndex = 2
       Me.btnBuildNewHauntedHouse.Text = "Build New Haunted House"
       Me.btnBuildNewHauntedHouse.UseVisualStyleBackColor = False
       '
