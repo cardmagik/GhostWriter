@@ -16,6 +16,12 @@ Module GhostWriterCentralHouseKeeping
    Public Const OnlineOrLocalOnlineValue = "Online"
    Public Const OnlineOrLocalLocalValue = "Local"
 
+   Public OpenHauntedHouseList As List(Of clsOpenHauntedHouse)
+
+   Public LastGhostFormLocation As Point
+   Public Const X_Form_Position_increment = 20
+   Public Const Y_Form_Position_increment = 20
+
    ' Required on start to make sure everything that's needed is initialized
    Public Sub CentralStart()
 
@@ -24,6 +30,10 @@ Module GhostWriterCentralHouseKeeping
       If OnlineAvailable Then frmVersionControl.CompareVersions(SharePointDirectory)
 
       LoadSettings()
+
+      OpenHauntedHouseList = New List(Of clsOpenHauntedHouse)
+
+      LastGhostFormLocation = InitializeFormLocation(frmGhostWriter)
 
    End Sub
 
@@ -40,6 +50,15 @@ Module GhostWriterCentralHouseKeeping
       End If
 
    End Sub
+
+   Function InitializeFormLocation(formName As Form) As Point
+      InitializeFormLocation = IncrementGhostFormLocation(formName.Location)
+   End Function
+
+   Function IncrementGhostFormLocation(CurrentPoint As Point) As Point
+      IncrementGhostFormLocation.X = CurrentPoint.X + X_Form_Position_increment
+      IncrementGhostFormLocation.Y = CurrentPoint.Y + Y_Form_Position_increment
+   End Function
 
    ' Required on exit to make sure settings are all saved
    Public Sub CentralExit()

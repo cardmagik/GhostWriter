@@ -29,6 +29,12 @@ Public Class frmGhostWriter
 
       LoadHauntedHouses(HauntedHouseDirectory)
 
+      If NumReincarnatedHouses > 0 Then
+         btnReincarnateHauntedHouse.Visible = False ' this is always false at this time - enhancement logic
+      Else
+         btnReincarnateHauntedHouse.Visible = False
+      End If
+
       PopulateHauntedHouseButtons()
 
    End Sub
@@ -159,6 +165,11 @@ Public Class frmGhostWriter
       SetOnlineOrLocalButton(OnlineOrLocal)
 
       LoadHauntedHouses(HauntedHouseDirectory)
+      If NumReincarnatedHouses > 0 Then
+         btnReincarnateHauntedHouse.Visible = False ' this is always false at this time - enhancement logic
+      Else
+         btnReincarnateHauntedHouse.Visible = False
+      End If
 
       PopulateHauntedHouseButtons()
 
@@ -168,8 +179,8 @@ Public Class frmGhostWriter
 
       If OnlineAvailable Then
          lblClickToToggle.Visible = True
-         CopyHouseToLocalToolStripMenuItem.Visible = True
-         CopyHouseToSharePointToolStripMenuItem.Visible = True
+         CopyHouseToLocalToolStripMenuItem.Visible = False ' this is always false at this time - enhancement logic - check the cascade menu for visible options at that time
+         CopyHouseToSharePointToolStripMenuItem.Visible = False ' this is always false at this time - enhancement logic
       Else
          lblClickToToggle.Visible = False
          CopyHouseToLocalToolStripMenuItem.Visible = False
@@ -217,28 +228,30 @@ Public Class frmGhostWriter
    End Sub
 
    Sub OpenSelectedHauntedHouse()
-      MsgBox("Opening House " & SelectedHauntedHouseIndex)
+
+      Dim NewGhostsForm As New frmGhosts
+      Dim FoundIndex As Integer
+
+      FoundIndex = FindOpenHauntedHouse(HauntedHouses(SelectedHauntedHouseIndex).Name, OnlineOrLocal)
+
+      If FoundIndex = NotFound Then
+         NewGhostsForm.Tag = AddOpenHauntedHouse(HauntedHouses(SelectedHauntedHouseIndex).Name, OnlineOrLocal, HauntedHouses(SelectedHauntedHouseIndex).FullyQualifiedLocation, NewGhostsForm)
+
+         NewGhostsForm.StartPosition = FormStartPosition.Manual
+         NewGhostsForm.Location = LastGhostFormLocation
+
+         LastGhostFormLocation = IncrementGhostFormLocation(LastGhostFormLocation)
+
+         NewGhostsForm.Show()
+      Else
+         OpenHauntedHouseList(FoundIndex).FormHandle.BringToFront()
+      End If
+
    End Sub
 
    Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem.Click
       ClearFormMessage()
       OpenSelectedHauntedHouse()
-   End Sub
-
-   Private Sub CopyHouseToLocalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToLocalToolStripMenuItem.Click
-      ClearFormMessage()
-      MsgBox("Copying SharePoint house " & SelectedHauntedHouseIndex & " to Local")
-   End Sub
-
-   Private Sub CopyHouseToSharePointToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToSharePointToolStripMenuItem.Click
-      ClearFormMessage()
-      MsgBox("Copying local house " & SelectedHauntedHouseIndex & " to SharePoint")
-   End Sub
-
-   Private Sub DemolishHauntedHouseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DemolishHauntedHouseToolStripMenuItem.Click
-      ClearFormMessage()
-      'MsgBox("Demolish house " & SelectedHauntedHouseIndex)
-      SetFormMessage("House " & HauntedHouses(SelectedHauntedHouseIndex).Name & " Demolished ")
    End Sub
 
    Private Sub btnBuildNewHauntedHouse_Click(sender As Object, e As EventArgs) Handles btnBuildNewHauntedHouse.Click
@@ -276,6 +289,24 @@ Public Class frmGhostWriter
 
       PopulateHauntedHouseButtons()
 
+   End Sub
+
+   ' Future enhancement code
+
+   Private Sub CopyHouseToLocalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToLocalToolStripMenuItem.Click
+      ClearFormMessage()
+      MsgBox("Copying SharePoint house " & SelectedHauntedHouseIndex & " to Local")
+   End Sub
+
+   Private Sub CopyHouseToSharePointToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyHouseToSharePointToolStripMenuItem.Click
+      ClearFormMessage()
+      MsgBox("Copying local house " & SelectedHauntedHouseIndex & " to SharePoint")
+   End Sub
+
+   Private Sub DemolishHauntedHouseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DemolishHauntedHouseToolStripMenuItem.Click
+      ClearFormMessage()
+      'MsgBox("Demolish house " & SelectedHauntedHouseIndex)
+      SetFormMessage("House " & HauntedHouses(SelectedHauntedHouseIndex).Name & " Demolished ")
    End Sub
 
 End Class

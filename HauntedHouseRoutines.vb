@@ -13,44 +13,77 @@ Module HauntedHouseRoutines
    Public HauntedHouses(MaxHHDirectories) As HHDirectoriesStructure
    Public NumHHDirectories As Integer
 
+   Dim MaxReincarnatedHouses As Integer = 50
+   Public ReincarnatedHouses(MaxReincarnatedHouses) As HHDirectoriesStructure
+   Public NumReincarnatedHouses As Integer
+
    Public HauntedHouseDirectory As String
 
    Public HauntedHouseColors() As String = {"Blue", "Red", "Yellow", "Green", "Purple"}
+
+   Const HauntedHouseString As String = "HH "
+   Const ReincarnatedHouseString As String = "RH "
+
+   Public Const NotFound = -1
 
    Public Sub LoadHauntedHouses(MainDirectory As String)
 
       Dim HHDirectory As String
       Dim ColorIndex As Integer
       Dim HauntedHouseName As String
+      Dim HouseType As String
 
       If Directory.Exists(HauntedHouseDirectory) = False Then Exit Sub
 
       NumHHDirectories = 0
+      NumReincarnatedHouses = 0
 
       For Each Dir As String In Directory.GetDirectories(MainDirectory)
 
          HauntedHouseName = ""
+         HouseType = ""
 
-         HHDirectory = GetHauntedHouseDirectory(Dir)
+         Dim t As Tuple(Of String, String) = GetHouseDirectory(Dir)
+         HouseType = t.Item1
+         HHDirectory = t.Item2
 
          If HHDirectory <> "" Then
             ParseHauntedHouseDirectory(HHDirectory, HauntedHouseName, ColorIndex)
-            If HauntedHouseName <> "" Then AddHauntedHouse(HauntedHouseName, ColorIndex, Dir)
+            If HauntedHouseName <> "" Then AddHauntedHouse(HauntedHouseName, ColorIndex, Dir, HouseType)
          End If
 
       Next
 
    End Sub
 
-   Function GetHauntedHouseDirectory(FQ_DirectoryName As String) As String
+   Function GetHouseDirectory(FQ_DirectoryName As String) As Tuple(Of String, String)
 
       Dim SubFolder As String
+      Dim HouseType As String
+      Dim First3Chars As String
 
-      GetHauntedHouseDirectory = ""
+
+      HouseType = ""
+      SubFolder = ""
+      GetHouseDirectory = New Tuple(Of String, String)(HouseType, SubFolder)
 
       SubFolder = GetLastSubFolder(FQ_DirectoryName)
 
-      If Len(SubFolder) > 3 AndAlso UCase(Mid(SubFolder, 1, 3)) = "HH " Then GetHauntedHouseDirectory = SubFolder
+      If Len(SubFolder) > 3 Then
+
+         First3Chars = UCase(Mid(SubFolder, 1, 3))
+         Select Case First3Chars
+            Case Is = HauntedHouseString
+               HouseType = HauntedHouseString
+            Case Is = ReincarnatedHouseString
+               HouseType = ReincarnatedHouseString
+            Case Else
+               HouseType = ""
+               SubFolder = ""
+         End Select
+      End If
+
+      Return New Tuple(Of String, String)(HouseType, SubFolder)
 
    End Function
 
@@ -59,11 +92,11 @@ Module HauntedHouseRoutines
       Dim PossibleColor As String
 
       ' Well formed Haunted House Directories have 3 elements:
-      '   HH
+      '   HH or RH
       '   Haunted House Name
       '   Color
 
-      ' Strip the HH off the front
+      ' Strip the first 4 characters off the front
       HauntedHouseName = Trim(Mid(DirName, 4))
 
       ' Pull the last word off and match to the color array 
@@ -80,24 +113,43 @@ Module HauntedHouseRoutines
 
    End Sub
 
-   Sub AddHauntedHouse(HauntedHouseName As String, Colorindex As Integer, FullyQualifiedDirectory As String)
+   Sub AddHauntedHouse(HauntedHouseName As String, Colorindex As Integer, FullyQualifiedDirectory As String, HouseType As String)
+
+      'MsgBox("Found house name " & HauntedHouseName & " house type " & HouseType)
 
       If FindDupHauntedHouseName(HauntedHouseName) Then
-
          MsgBox("Duplicate Haunted House Directory " & HauntedHouseName & " ignored")
          Exit Sub
-
       End If
 
-      NumHHDirectories = NumHHDirectories + 1
-      If NumHHDirectories > MaxHHDirectories Then
-         MaxHHDirectories = MaxHHDirectories + 50
-         ReDim Preserve HauntedHouses(MaxHHDirectories)
-      End If
+      If HouseType = HauntedHouseString Then
 
-      HauntedHouses(NumHHDirectories).Name = HauntedHouseName
-      HauntedHouses(NumHHDirectories).ColorName = HauntedHouseColors(Colorindex)
-      HauntedHouses(NumHHDirectories).FullyQualifiedLocation = FullyQualifiedDirectory
+         NumHHDirectories = NumHHDirectories + 1
+         If NumHHDirectories > MaxHHDirectories Then
+            MaxHHDirectories = MaxHHDirectories + 50
+            ReDim Preserve HauntedHouses(MaxHHDirectories)
+         End If
+
+         HauntedHouses(NumHHDirectories).Name = HauntedHouseName
+         HauntedHouses(NumHHDirectories).ColorName = HauntedHouseColors(Colorindex)
+         HauntedHouses(NumHHDirectories).FullyQualifiedLocation = FullyQualifiedDirectory
+      Else
+         If HouseType = ReincarnatedHouseString Then
+
+            'MsgBox("Adding reincarnated house " & HauntedHouseName & " to index " & NumReincarnatedHouses)
+
+            NumReincarnatedHouses = NumReincarnatedHouses + 1
+            If NumReincarnatedHouses > MaxReincarnatedHouses Then
+               MaxReincarnatedHouses = MaxReincarnatedHouses + 50
+               ReDim Preserve HauntedHouses(MaxReincarnatedHouses)
+            End If
+
+            ReincarnatedHouses(NumReincarnatedHouses).Name = HauntedHouseName
+            ReincarnatedHouses(NumReincarnatedHouses).ColorName = HauntedHouseColors(Colorindex)
+            ReincarnatedHouses(NumReincarnatedHouses).FullyQualifiedLocation = FullyQualifiedDirectory
+         End If
+
+      End If
 
    End Sub
 
@@ -143,5 +195,50 @@ Module HauntedHouseRoutines
       Next
 
    End Function
+
+   Function FindOpenHauntedHouse(HauntedHouseName As String, OnlineOrLocal As String) As Integer
+
+      Dim I As Integer
+
+      FindOpenHauntedHouse = NotFound
+
+      For I = 0 To OpenHauntedHouseList.Count - 1
+
+         If OpenHauntedHouseList(I).HauntedHouseName = HauntedHouseName _
+            And OpenHauntedHouseList(I).OnlineOrLocalStatus = OnlineOrLocal Then
+            Return I
+         End If
+
+      Next
+
+   End Function
+
+   Function AddOpenHauntedHouse(HouseName As String, OnlineOrLocal As String, FQDirectory As String, FormHandle As Form) As Integer
+
+      Dim NewOpenHouse As New clsOpenHauntedHouse
+
+      AddOpenHauntedHouse = NotFound
+
+      NewOpenHouse.HauntedHouseName = HouseName
+      NewOpenHouse.OnlineOrLocalStatus = OnlineOrLocal
+      NewOpenHouse.FQDirectory = FQDirectory
+      NewOpenHouse.FormHandle = FormHandle
+
+      OpenHauntedHouseList.Add(NewOpenHouse)
+      Return OpenHauntedHouseList.Count - 1
+
+   End Function
+
+   Sub DeleteOpenHauntedhouse(HouseName As String, OnlineOrLocal As String)
+
+      Dim DelIndex As Integer
+      DelIndex = FindOpenHauntedHouse(HouseName, OnlineOrLocal)
+      If DelIndex >= 0 Then
+         OpenHauntedHouseList.RemoveAt(DelIndex)
+      End If
+
+      If OpenHauntedHouseList.Count = 0 Then LastGhostFormLocation = InitializeFormLocation(frmGhostWriter)
+
+   End Sub
 
 End Module

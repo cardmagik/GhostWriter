@@ -76,6 +76,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsOpenHauntedHouse.vb" />
     <Compile Include="Configuration.vb" />
     <Compile Include="frmDataEntry.Designer.vb">
       <DependentUpon>frmDataEntry.vb</DependentUpon>

@@ -1,7 +1,9 @@
 ﻿Public Class frmGhosts
 
    Private Sub frmGhosts_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-      MsgBox("In frmGhosts - tag is " & Me.Tag)
+
+      Me.Text = "Haunted House " & OpenHauntedHouseList(Me.Tag).HauntedHouseName
+
    End Sub
 
    Public Sub New()

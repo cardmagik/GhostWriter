@@ -41,6 +41,7 @@ Partial Class frmGhostWriter
       Me.lblClickToToggle = New System.Windows.Forms.Label()
       Me.lblHauntedHouseFormMessage = New System.Windows.Forms.Label()
       Me.btnBuildNewHauntedHouse = New System.Windows.Forms.Button()
+      Me.btnReincarnateHauntedHouse = New System.Windows.Forms.Button()
       Me.MenuStrip1.SuspendLayout()
       Me.ctxtMenuHauntedHouse.SuspendLayout()
       Me.SuspendLayout()
@@ -65,7 +66,7 @@ Partial Class frmGhostWriter
       'ExitToolStripMenuItem
       '
       Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-      Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+      Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(95, 22)
       Me.ExitToolStripMenuItem.Text = "Exit"
       '
       'SettingsToolStripMenuItem
@@ -119,7 +120,7 @@ Partial Class frmGhostWriter
       '
       Me.ctxtMenuHauntedHouse.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenToolStripMenuItem, Me.PropertiesToolStripMenuItem, Me.CopyHouseToLocalToolStripMenuItem, Me.CopyHouseToSharePointToolStripMenuItem, Me.DemolishHauntedHouseToolStripMenuItem})
       Me.ctxtMenuHauntedHouse.Name = "ContextMenuStrip1"
-      Me.ctxtMenuHauntedHouse.Size = New System.Drawing.Size(214, 114)
+      Me.ctxtMenuHauntedHouse.Size = New System.Drawing.Size(214, 136)
       '
       'OpenToolStripMenuItem
       '
@@ -138,18 +139,21 @@ Partial Class frmGhostWriter
       Me.CopyHouseToLocalToolStripMenuItem.Name = "CopyHouseToLocalToolStripMenuItem"
       Me.CopyHouseToLocalToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
       Me.CopyHouseToLocalToolStripMenuItem.Text = "Copy House to Local"
+      Me.CopyHouseToLocalToolStripMenuItem.Visible = False
       '
       'CopyHouseToSharePointToolStripMenuItem
       '
       Me.CopyHouseToSharePointToolStripMenuItem.Name = "CopyHouseToSharePointToolStripMenuItem"
       Me.CopyHouseToSharePointToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
       Me.CopyHouseToSharePointToolStripMenuItem.Text = "Copy House to SharePoint"
+      Me.CopyHouseToSharePointToolStripMenuItem.Visible = False
       '
       'DemolishHauntedHouseToolStripMenuItem
       '
       Me.DemolishHauntedHouseToolStripMenuItem.Name = "DemolishHauntedHouseToolStripMenuItem"
       Me.DemolishHauntedHouseToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
       Me.DemolishHauntedHouseToolStripMenuItem.Text = "Demolish Haunted House"
+      Me.DemolishHauntedHouseToolStripMenuItem.Visible = False
       '
       'lblClickToToggle
       '
@@ -185,12 +189,26 @@ Partial Class frmGhostWriter
       Me.btnBuildNewHauntedHouse.Text = "Build New Haunted House"
       Me.btnBuildNewHauntedHouse.UseVisualStyleBackColor = False
       '
+      'btnReincarnateHauntedHouse
+      '
+      Me.btnReincarnateHauntedHouse.BackColor = System.Drawing.Color.Wheat
+      Me.btnReincarnateHauntedHouse.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+      Me.btnReincarnateHauntedHouse.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+      Me.btnReincarnateHauntedHouse.ForeColor = System.Drawing.Color.MidnightBlue
+      Me.btnReincarnateHauntedHouse.Location = New System.Drawing.Point(272, 481)
+      Me.btnReincarnateHauntedHouse.Name = "btnReincarnateHauntedHouse"
+      Me.btnReincarnateHauntedHouse.Size = New System.Drawing.Size(270, 33)
+      Me.btnReincarnateHauntedHouse.TabIndex = 8
+      Me.btnReincarnateHauntedHouse.Text = "Reincarnate Haunted House"
+      Me.btnReincarnateHauntedHouse.UseVisualStyleBackColor = False
+      '
       'frmGhostWriter
       '
       Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
       Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
       Me.BackColor = System.Drawing.Color.SeaShell
       Me.ClientSize = New System.Drawing.Size(784, 526)
+      Me.Controls.Add(Me.btnReincarnateHauntedHouse)
       Me.Controls.Add(Me.btnBuildNewHauntedHouse)
       Me.Controls.Add(Me.lblHauntedHouseFormMessage)
       Me.Controls.Add(Me.lblClickToToggle)
@@ -228,5 +246,6 @@ Partial Class frmGhostWriter
    Friend WithEvents lblClickToToggle As System.Windows.Forms.Label
    Friend WithEvents lblHauntedHouseFormMessage As System.Windows.Forms.Label
    Friend WithEvents btnBuildNewHauntedHouse As System.Windows.Forms.Button
+   Friend WithEvents btnReincarnateHauntedHouse As System.Windows.Forms.Button
 
 End Class
