@@ -42,6 +42,7 @@ Partial Class frmGhostWriter
       Me.lblHauntedHouseFormMessage = New System.Windows.Forms.Label()
       Me.btnBuildNewHauntedHouse = New System.Windows.Forms.Button()
       Me.btnReincarnateHauntedHouse = New System.Windows.Forms.Button()
+      Me.Label1 = New System.Windows.Forms.Label()
       Me.MenuStrip1.SuspendLayout()
       Me.ctxtMenuHauntedHouse.SuspendLayout()
       Me.SuspendLayout()
@@ -120,7 +121,7 @@ Partial Class frmGhostWriter
       '
       Me.ctxtMenuHauntedHouse.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenToolStripMenuItem, Me.PropertiesToolStripMenuItem, Me.CopyHouseToLocalToolStripMenuItem, Me.CopyHouseToSharePointToolStripMenuItem, Me.DemolishHauntedHouseToolStripMenuItem})
       Me.ctxtMenuHauntedHouse.Name = "ContextMenuStrip1"
-      Me.ctxtMenuHauntedHouse.Size = New System.Drawing.Size(214, 136)
+      Me.ctxtMenuHauntedHouse.Size = New System.Drawing.Size(214, 114)
       '
       'OpenToolStripMenuItem
       '
@@ -202,12 +203,23 @@ Partial Class frmGhostWriter
       Me.btnReincarnateHauntedHouse.Text = "Reincarnate Haunted House"
       Me.btnReincarnateHauntedHouse.UseVisualStyleBackColor = False
       '
+      'Label1
+      '
+      Me.Label1.AutoSize = True
+      Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+      Me.Label1.Location = New System.Drawing.Point(39, 47)
+      Me.Label1.Name = "Label1"
+      Me.Label1.Size = New System.Drawing.Size(530, 20)
+      Me.Label1.TabIndex = 9
+      Me.Label1.Text = "Click a Haunted House to open it or right-click it for other options"
+      '
       'frmGhostWriter
       '
       Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
       Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
       Me.BackColor = System.Drawing.Color.SeaShell
       Me.ClientSize = New System.Drawing.Size(784, 526)
+      Me.Controls.Add(Me.Label1)
       Me.Controls.Add(Me.btnReincarnateHauntedHouse)
       Me.Controls.Add(Me.btnBuildNewHauntedHouse)
       Me.Controls.Add(Me.lblHauntedHouseFormMessage)
@@ -247,5 +259,6 @@ Partial Class frmGhostWriter
    Friend WithEvents lblHauntedHouseFormMessage As System.Windows.Forms.Label
    Friend WithEvents btnBuildNewHauntedHouse As System.Windows.Forms.Button
    Friend WithEvents btnReincarnateHauntedHouse As System.Windows.Forms.Button
+   Friend WithEvents Label1 As System.Windows.Forms.Label
 
 End Class

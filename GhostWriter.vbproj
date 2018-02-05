@@ -90,10 +90,10 @@
     <Compile Include="frmEditGhost.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmGhosts.Designer.vb">
-      <DependentUpon>frmGhosts.vb</DependentUpon>
+    <Compile Include="frmHauntedHouse.Designer.vb">
+      <DependentUpon>frmHauntedHouse.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmGhosts.vb">
+    <Compile Include="frmHauntedHouse.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmHauntedHouseProperties.Designer.vb">
@@ -143,8 +143,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmGhosts.resx">
-      <DependentUpon>frmGhosts.vb</DependentUpon>
+    <EmbeddedResource Include="frmHauntedHouse.resx">
+      <DependentUpon>frmHauntedHouse.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmHauntedHouseProperties.resx">
       <DependentUpon>frmHauntedHouseProperties.vb</DependentUpon>

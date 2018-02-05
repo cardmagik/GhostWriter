@@ -229,12 +229,22 @@ Public Class frmGhostWriter
 
    Sub OpenSelectedHauntedHouse()
 
-      Dim NewGhostsForm As New frmGhosts
+      Dim NewGhostsForm As New frmHauntedHouse
       Dim FoundIndex As Integer
-
+      Dim OpenHauntedHouse As clsOpenHauntedHouse
       FoundIndex = FindOpenHauntedHouse(HauntedHouses(SelectedHauntedHouseIndex).Name, OnlineOrLocal)
 
+      ' Bring all open Haunted Houses to the front, then the newly opened one or reopened one will be on top
+      For Each OpenHauntedHouse In OpenHauntedHouseList
+         OpenHauntedHouse.FormHandle.BringToFront()
+      Next
+
       If FoundIndex = NotFound Then
+
+         If OpenHauntedHouseList.Count = 0 Then
+            LastGhostFormLocation = InitializeFormLocation(Me)
+         End If
+
          NewGhostsForm.Tag = AddOpenHauntedHouse(HauntedHouses(SelectedHauntedHouseIndex).Name, OnlineOrLocal, HauntedHouses(SelectedHauntedHouseIndex).FullyQualifiedLocation, NewGhostsForm)
 
          NewGhostsForm.StartPosition = FormStartPosition.Manual
@@ -243,6 +253,7 @@ Public Class frmGhostWriter
          LastGhostFormLocation = IncrementGhostFormLocation(LastGhostFormLocation)
 
          NewGhostsForm.Show()
+
       Else
          OpenHauntedHouseList(FoundIndex).FormHandle.BringToFront()
       End If
