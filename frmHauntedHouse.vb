@@ -242,6 +242,5 @@ Public Class frmHauntedHouse
 
    Private Sub btnNewGhost_Click(sender As Object, e As EventArgs) Handles btnNewGhost.Click
       MsgBox("Creating new Ghost")
-      'test 
    End Sub
 End Class
