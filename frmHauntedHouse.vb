@@ -76,11 +76,11 @@ Public Class frmHauntedHouse
 
          pnlGhostList.Controls.Add(GhostLabel)
 
-         AddHandler GhostLabel.Click, AddressOf Me.UseGhost
+         AddHandler GhostLabel.Click, AddressOf Me.GhostDataEntry
 
          CurrentLeft = CurrentLeft + LabelWidth
 
-         AddButton("Use", AddressOf Me.UseGhost, GhostCount)
+         AddButton("Use", AddressOf Me.GhostDataEntry, GhostCount)
          AddButton("Edit", AddressOf Me.EditGhost, GhostCount)
          'AddButton("Rename", AddressOf Me.RenameGhost, GhostCount)
          'AddButton("Delete", AddressOf Me.DeleteGhost, GhostCount)
@@ -139,13 +139,52 @@ Public Class frmHauntedHouse
 
    End Sub
 
-   Sub UseGhost(sender As Object, e As EventArgs)
-      MsgBox("Using Ghost tag: " & sender.tag)
+   Sub GhostDataEntry(sender As Object, e As EventArgs)
+
+      If Not TypeOf (sender) Is Button Then
+         Exit Sub
+      End If
+
+      For Each ghost In GhostList
+         If ghost.GhostIndex = sender.tag Then
+            Dim DataEntryGhost As New clsGhost
+            With DataEntryGhost
+               .FQ_Name = ghost.FQ_GhostFileName
+               .GhostDescription = ghost.GhostDescription
+               .GhostPageForm = Nothing
+               .OnlineOrLocal = OnlineOrLocal
+               .Dirty = False
+            End With
+
+            InvokeDataEntryGhost(DataEntryGhost, Me.Top, Me.Left)
+            Exit For
+         End If
+      Next
 
    End Sub
 
    Sub EditGhost(sender As Object, e As EventArgs)
-      MsgBox("Editing Ghost tag: " & sender.tag)
+
+      If Not TypeOf (sender) Is Button Then
+         Exit Sub
+      End If
+
+      For Each ghost In GhostList
+         If ghost.GhostIndex = sender.tag Then
+            Dim EditGhost As New clsGhost
+            With EditGhost
+               .FQ_Name = ghost.FQ_GhostFileName
+               .GhostDescription = ghost.GhostDescription
+               .GhostPageForm = Nothing
+               .OnlineOrLocal = OnlineOrLocal
+               .Dirty = False
+            End With
+
+            InvokeEditGhost(EditGhost, Me.Top, Me.Left)
+            Exit For
+         End If
+      Next
+
    End Sub
 
    Sub RenameGhost(sender As Object, e As EventArgs)

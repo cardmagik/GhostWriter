@@ -22,8 +22,17 @@ Partial Class frmEditGhost
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Text = "frmEditGhost"
-    End Sub
+      Me.SuspendLayout()
+      '
+      'frmEditGhost
+      '
+      Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+      Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+      Me.ClientSize = New System.Drawing.Size(284, 261)
+      Me.Name = "frmEditGhost"
+      Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+      Me.Text = "frmEditGhost"
+      Me.ResumeLayout(False)
+
+   End Sub
 End Class

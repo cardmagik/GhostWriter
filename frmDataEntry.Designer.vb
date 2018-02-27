@@ -22,8 +22,17 @@ Partial Class frmDataEntry
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Text = "frmDataEntry"
-    End Sub
+      Me.SuspendLayout()
+      '
+      'frmDataEntry
+      '
+      Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+      Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+      Me.ClientSize = New System.Drawing.Size(284, 261)
+      Me.Name = "frmDataEntry"
+      Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+      Me.Text = "frmDataEntry"
+      Me.ResumeLayout(False)
+
+   End Sub
 End Class

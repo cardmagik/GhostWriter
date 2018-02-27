@@ -33,6 +33,10 @@ Module GhostWriterCentralHouseKeeping
 
       OpenHauntedHouseList = New List(Of clsOpenHauntedHouse)
 
+      OpenDataEntryGhosts = New List(Of clsGhost)
+
+      OpenEditGhosts = New List(Of clsGhost)
+
       LastGhostFormLocation = InitializeFormLocation(frmGhostWriter)
 
    End Sub
@@ -62,6 +66,12 @@ Module GhostWriterCentralHouseKeeping
 
    ' Required on exit to make sure settings are all saved
    Public Sub CentralExit()
+
+      If DirtyGhosts() Then
+         If MessageBox.Show("There are Ghosts being edited with unsaved changes.  Exiting now will lose these changes.  LOSE ALL CHANGES???", "Open Ghosts with Unsaved Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
+            Exit Sub
+         End If
+      End If
 
       My.Settings.Save()
       SharePointSettings = Nothing
