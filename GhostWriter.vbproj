@@ -76,9 +76,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsFields.vb" />
     <Compile Include="clsGhost.vb" />
     <Compile Include="clsOpenHauntedHouse.vb" />
     <Compile Include="Configuration.vb" />
+    <Compile Include="clsDateValidation.vb" />
     <Compile Include="frmDataEntry.Designer.vb">
       <DependentUpon>frmDataEntry.vb</DependentUpon>
     </Compile>
@@ -89,6 +91,12 @@
       <DependentUpon>frmEditGhost.vb</DependentUpon>
     </Compile>
     <Compile Include="frmEditGhost.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFieldProperties.designer.vb">
+      <DependentUpon>frmFieldProperties.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFieldProperties.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmGetGhostDescr.Designer.vb">
@@ -107,6 +115,12 @@
       <DependentUpon>frmHauntedHouseProperties.vb</DependentUpon>
     </Compile>
     <Compile Include="frmHauntedHouseProperties.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPreviewGhostResults.Designer.vb">
+      <DependentUpon>frmPreviewGhostResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPreviewGhostResults.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSettingsSharePointLocation.Designer.vb">
@@ -158,6 +172,9 @@
     <EmbeddedResource Include="frmEditGhost.resx">
       <DependentUpon>frmEditGhost.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmFieldProperties.resx">
+      <DependentUpon>frmFieldProperties.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmGetGhostDescr.resx">
       <DependentUpon>frmGetGhostDescr.vb</DependentUpon>
     </EmbeddedResource>
@@ -166,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmHauntedHouseProperties.resx">
       <DependentUpon>frmHauntedHouseProperties.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPreviewGhostResults.resx">
+      <DependentUpon>frmPreviewGhostResults.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsSharePointLocation.resx">
       <DependentUpon>frmSettingsSharePointLocation.vb</DependentUpon>

@@ -2,6 +2,9 @@
 
 Module GlobalRoutines
 
+   Public Const CommandStartString = "<?"
+   Public Const CommandEndString = "?>"
+
    Public Function AddSlashToPath(InputPath As String) As String
 
       Dim OutputPath As String
@@ -85,6 +88,73 @@ Module GlobalRoutines
 
          Return False
       End Try
+
+   End Function
+   Function ShellExecute(ByVal File As String) As String
+
+      Dim myProcess As New Process
+      ShellExecute = ""
+
+      Try
+
+         myProcess.StartInfo.FileName = File
+         myProcess.StartInfo.UseShellExecute = True
+         myProcess.StartInfo.RedirectStandardOutput = False
+         myProcess.Start()
+         myProcess.Dispose()
+
+      Catch ex As Exception
+         ShellExecute = "Error Encountered trying to open file " & File & vbCrLf & ex.Message
+      End Try
+
+   End Function
+
+   Public Function GetCommandString(InputLine As String, ByRef CommandStartLoc As Integer, ByRef CommandLength As Integer) As String
+
+      Dim CommandEndLoc As Integer = 0
+      Dim InternalLength As Integer
+
+      'Debug.Print("   Processing string " & InputLine)
+      '1234567890
+      '<?Field?>
+      ' Start loc of delimiter is 1
+      ' Start loc of content is 3
+      ' End Loc of delimiter is 8
+      ' End Loc of content is 7
+      ' Total length of delimited data is  9 = 8 - 1 + 2
+      ' However, total length of content is 5 = 7 - 3 + 1
+      ' Or End Loc - Start Loc - 2 
+      ' 8 - 1 - 2 = 5
+      '123456789012345
+      '   <?Field?>
+      ' Start Loc = 4
+      ' End Loc = 11
+      ' End Loc - start loc - 2
+      ' 11 - 4 - 2 = 5
+      ' However, CommandLength is inclusive of the delimiters
+      ' Full command length is 9
+      ' CommandLength = End Loc - StartLoc + 2
+      '   = 8 - 1 + 2 = 9 for the first one
+      '   = 11 - 4 + 2 = 9
+
+      GetCommandString = ""
+
+      CommandStartLoc = InStr(InputLine, CommandStartString)
+
+      If CommandStartLoc > 0 Then
+         'Debug.Print("   Found Starting string " & CommandStartString & " at location " & CommandStartLoc)
+         CommandEndLoc = InStr(CommandStartLoc + 1, InputLine, CommandEndString)
+         If CommandEndLoc > 0 Then
+            'Debug.Print("Input Line is " & InputLine)
+
+            'Debug.Print("   Found End Loc string " & CommandEndString & " at location " & CommandEndLoc)
+            InternalLength = CommandEndLoc - CommandStartLoc - 2
+            CommandLength = CommandEndLoc - CommandStartLoc + 2
+            'Debug.Print("   Length is " & CommandLength)
+            GetCommandString = Mid(InputLine, CommandStartLoc + 2, InternalLength)
+         End If
+
+      End If
 
    End Function
 
