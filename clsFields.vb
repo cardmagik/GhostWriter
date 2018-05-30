@@ -57,7 +57,7 @@ Public Class clsFields
          'Debug.Print("In ExtractFields - Processing line " & WorkingLine)
 
          Dim counter As Integer = 0
-         While FieldPresent(WorkingLine, FieldName, CommandStart, CommandLength, FieldParts)
+         While FieldPresent(WorkingLine, CommandStart, CommandLength, FieldParts)
             counter = counter + 1
             WorkingLine = StripCommand(WorkingLine, CommandStart, CommandLength)
 
@@ -75,7 +75,7 @@ Public Class clsFields
 
       Next
 
-      Debug.Print("number of fields " & NumFields)
+      'Debug.Print("number of fields " & NumFields)
 
       'DumpFieldArray()
       EliminateDuplicateOrderNumbers()
@@ -261,7 +261,7 @@ Public Class clsFields
 
       ValidateFieldParts = True
 
-      Debug.Print("In ValidateFieldParts - Fieldname is " & FieldName)
+      'Debug.Print("In ValidateFieldParts - Fieldname is " & FieldName)
 
       ' Field name can't be blank
       If Trim(FieldName) = "" Then
@@ -330,7 +330,7 @@ Public Class clsFields
       CaseFormat = ""
 
       If NumParts >= 1 Then FieldName = Trim(FieldParts(1))
-      Debug.Print("FieldParts 1 is " & FieldParts(1))
+      'Debug.Print("FieldParts 1 is " & FieldParts(1))
       If NumParts >= 2 Then Required = Trim(UCase(FieldParts(2)))
       If NumParts >= 3 Then DefaultValue = Trim(FieldParts(3))
       If NumParts >= 4 Then FieldOrder = Trim(FieldParts(4))
@@ -362,7 +362,7 @@ Public Class clsFields
 
    End Function
 
-   Public Function FieldPresent(Line As String, ByRef FieldName As String, ByRef CommandStart As Integer, ByRef CommandLength As Integer, ByRef FieldParts() As String) As Boolean
+   Public Function FieldPresent(Line As String, ByRef CommandStart As Integer, ByRef CommandLength As Integer, ByRef FieldParts() As String) As Boolean
 
       Dim NoDelimiterString As String
 

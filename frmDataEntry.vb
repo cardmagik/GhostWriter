@@ -196,11 +196,11 @@ Public Class frmDataEntry
 
    Sub PlaceFieldsOnScreen()
 
-      Debug.Print("")
-      Debug.Print("Placing fields on screen")
+      'Debug.Print("")
+      'Debug.Print("Placing fields on screen")
       Dim FieldNum As Integer
       For FieldNum = 1 To Fields.NumFields
-         Debug.Print(Fields.FieldArray(FieldNum).FieldName)
+         'Debug.Print(Fields.FieldArray(FieldNum).FieldName)
          AddLabel(FieldNum)
          AddTextBox(FieldNum)
          CurrentHorizontal = CurrentHorizontal + HorizontalIncrement
@@ -234,6 +234,14 @@ Public Class frmDataEntry
          .Font = New System.Drawing.Font(FieldTextBox.Font.FontFamily, LabelFontSize)
          .Name = Fieldnum
          .ForeColor = TextBoxColor
+         If Trim(Fields.FieldArray(Fieldnum).DefaultValue) <> "" Then
+
+            If UCase(Trim(Fields.FieldArray(Fieldnum).DefaultValue)) = "TODAY" Then
+               Fields.FieldArray(Fieldnum).DefaultValue = Today()
+            End If
+
+            .Text = Trim(Fields.FieldArray(Fieldnum).DefaultValue)
+         End If
       End With
 
       pnlDataEntryFields.Controls.Add(FieldTextBox)
@@ -244,7 +252,6 @@ Public Class frmDataEntry
       End If
 
       AddHandler FieldTextBox.MouseHover, AddressOf TextBoxHover
-      Dim e As System.EventArgs
 
    End Sub
 
@@ -253,6 +260,7 @@ Public Class frmDataEntry
    End Sub
 
    Private Sub TextBoxHover(sender As Object, e As EventArgs)
+
       CurrentField = sender.name
       '      Debug.Print(e.ToString)
       lblFieldName.Text = Fields.FieldArray(sender.name).FieldName
@@ -361,15 +369,103 @@ Public Class frmDataEntry
 
    End Sub
 
-   Function FieldPresent(Line As String, ByRef FieldName As String, ByRef FieldStart As Integer, Fieldlength As Integer) As Boolean
-      FieldPresent = False
+   'Function FieldPresent(Line As String, ByRef FieldName As String, ByRef FieldStart As Integer, Fieldlength As Integer) As Boolean
+   '   FieldPresent = False
+   'End Function
+
+   Function PrepareOutputArray() As Boolean
+
+      If ValidateFields() = True Then
+         ReplaceFieldValues()
+      Else
+         Return False
+      End If
+
+      Return True
+
    End Function
 
-   Sub PrepareOutputArray()
+   Function ValidateFields() As Boolean
 
-      ReplaceFieldValues()
+      Dim WorkingValue As String
+      Dim Dates As New clsDateValidation
+      Dim DateMessage As String
 
-   End Sub
+      ValidateFields = True
+
+      ' Process all fields in on form
+      For Each Element In pnlDataEntryFields.Controls
+
+         If TypeOf Element Is TextBox Then
+
+            'Debug.Print("Processing field " & Element.name)
+            '    Name is the index for the field array
+            '    Put trimmed value from textbox into value field of array
+            WorkingValue = Trim(Element.text)
+            Fields.FieldArray(Element.name).FieldValue = WorkingValue
+
+            '    If field textbox is blank:
+            '        If required, then stop processing and show error message - set focus to field
+            If WorkingValue = "" Then
+               If Fields.FieldArray(Element.name).Required = True Then
+                  SetMessage("Field " & Fields.FieldArray(Element.name).FieldName & " is required - please enter a value or turn required flag off")
+                  Element.Select()
+                  Return False
+               End If
+            Else
+               If Fields.FieldArray(Element.name).DateFormat <> "" Then
+
+                  If Dates.ValidateDateFormat(Fields.FieldArray(Element.name).DateFormat) = False Then
+                     SetMessage("Field " & Fields.FieldArray(Element.name).FieldName & " has an invalid date format in its properties - please correct this")
+                     Element.select()
+                     Return False
+                  End If
+                  DateMessage = Dates.ValidateDate(Fields.FieldArray(Element.name).FieldValue)
+                  If DateMessage <> "" Then
+                     SetMessage("Field " & Fields.FieldArray(Element.name).FieldName & " - " & DateMessage)
+                     Element.select()
+                     Return False
+                  End If
+
+                  'Debug.Print("Input Date was " & Fields.FieldArray(Element.name).FieldValue)
+
+                  Fields.FieldArray(Element.name).FieldValue = Dates.FormatDate(Fields.FieldArray(Element.name).FieldValue, Fields.FieldArray(Element.name).DateFormat)
+                  'Debug.Print("Output Date was " & Fields.FieldArray(Element.name).FieldValue)
+
+
+               End If
+
+               '    If Case is LC, UC, or PC, capitalize accordingly
+               Select Case UCase(Fields.FieldArray(Element.name).CaseFormat)
+                  Case Is = "LC"
+                     Fields.FieldArray(Element.name).FieldValue = LCase(Fields.FieldArray(Element.name).FieldValue)
+                  Case Is = "UC"
+                     Fields.FieldArray(Element.name).FieldValue = UCase(Fields.FieldArray(Element.name).FieldValue)
+                  Case Is = "PC"
+                     Fields.FieldArray(Element.name).FieldValue = StrConv(Fields.FieldArray(Element.name).FieldValue, VbStrConv.ProperCase)
+                  Case Else
+                     ' do nothing
+               End Select
+
+               '    If SQ or DQ, add quotes accordingly
+               Select Case UCase(Fields.FieldArray(Element.name).QuoteFormat)
+                  Case Is = "SQ"
+                     Fields.FieldArray(Element.name).FieldValue = Fields.FieldArray(Element.name).FieldValue.Replace("'", "")
+                     Fields.FieldArray(Element.name).FieldValue = "'" & Fields.FieldArray(Element.name).FieldValue & "'"
+                  Case Is = "DQ"
+                     Fields.FieldArray(Element.name).FieldValue = Fields.FieldArray(Element.name).FieldValue.Replace("""", "")
+                     Fields.FieldArray(Element.name).FieldValue = """" & Fields.FieldArray(Element.name).FieldValue & """"
+
+                  Case Else
+                     ' do nothing
+               End Select
+
+            End If
+
+         End If
+
+      Next
+   End Function
 
    Sub ReplaceFieldValues()
 
@@ -378,7 +474,9 @@ Public Class frmDataEntry
       Dim FieldName As String
       Dim FieldStart As Integer
       Dim FieldLength As Integer
-      Dim Passline As Boolean
+      Dim FieldParts(20) As String
+      Dim FieldIndex As Integer
+      Dim SuppressLine As Boolean
 
       NumOutputArrayLines = 0
 
@@ -390,16 +488,56 @@ Public Class frmDataEntry
          FieldName = ""
          FieldStart = 0
          FieldLength = 0
-         Passline = True
-
+         Dim count As Integer = 0
+         SuppressLine = False
+         'debug.print("")
+         'debug.print("=========================================================")
          'If a field present, find field in field array 
-         While FieldPresent(WorkingLine, FieldName, FieldStart, FieldLength)
-            '	If value present, replace field command in line with value (value should already be vetted)
-            '	If value not present, check if line is suppress if field blank
-            'If suppress is on, move to the next line
+         While Fields.FieldPresent(WorkingLine, FieldStart, FieldLength, FieldParts) And SuppressLine = False
+            count = count + 1
+            FieldName = FieldParts(1)
+            'debug.print("Input line is " & WorkingLine & " field name is " & FieldName)
+
+            FieldIndex = FindFieldInArray(FieldName)
+            If FieldIndex = -1 Then
+               'debug.print("Could not find field " & FieldName & " in field array")
+               SuppressLine = True
+            Else
+
+               If Trim(Fields.FieldArray(FieldIndex).FieldValue) = "" Then
+                  If Fields.FieldArray(FieldIndex).SuppressLine = True Then
+                     'debug.print("field " & FieldName & " has no value - suppressing line")
+                     'debug.print("")
+
+                     SuppressLine = True
+                     Exit While
+
+                  End If
+               End If
+
+               
+               'debug.print("Field Start is " & FieldStart & " Field Length is " & FieldLength)
+                  Dim part1 As String
+                  Dim part2 As String
+               'debug.print("123456789 123456789 123456789 123456789")
+               'debug.print(WorkingLine)
+                  part1 = Mid(WorkingLine, 1, FieldStart - 1)
+                  part2 = Mid(WorkingLine, FieldStart + FieldLength)
+               'debug.print("Part1 is " & part1 & " Part2 is " & part2)
+                  WorkingLine = Mid(WorkingLine, 1, FieldStart - 1) & Fields.FieldArray(FieldIndex).FieldValue & Mid(WorkingLine, FieldStart + FieldLength)
+               'debug.print("New Line is " & WorkingLine)
+               
+            End If
+
+            If count > 10 Then
+               'debug.print("Reached count of 10 and exiting loop")
+
+               Exit While
+            End If
+
          End While
 
-         If Passline Then
+         If SuppressLine = False Then
             NumOutputArrayLines = NumOutputArrayLines + 1
             If NumOutputArrayLines >= MaxOutputArrayLines Then
                MaxOutputArrayLines = MaxOutputArrayLines + LinesIncrement
@@ -412,6 +550,15 @@ Public Class frmDataEntry
 
    End Sub
 
+   Function FindFieldInArray(FieldName As String) As Integer
+      FindFieldInArray = -1
+      For I As Integer = 1 To Fields.NumFields
+         If UCase(Fields.FieldArray(I).FieldName) = UCase(FieldName) Then
+            Return I
+         End If
+      Next
+   End Function
+
    Private Sub btnSendToFile_Click(sender As Object, e As EventArgs) Handles btnSendToFile.Click
 
       Dim I As Integer
@@ -420,7 +567,7 @@ Public Class frmDataEntry
       Dim ShellExecuteError As String
       HideMessage()
 
-      PrepareOutputArray()
+      If PrepareOutputArray() = False Then Exit Sub
 
       FileName = AddSlashToPath(Directory.GetCurrentDirectory()) & "GhostWriter.txt"
 
@@ -453,7 +600,7 @@ Public Class frmDataEntry
 
       HideMessage()
 
-      PrepareOutputArray()
+      If PrepareOutputArray() = False Then Exit Sub
       OutputLine = ""
 
       For I = 1 To NumOutputArrayLines
@@ -473,7 +620,7 @@ Public Class frmDataEntry
 
       HideMessage()
 
-      PrepareOutputArray()
+      If PrepareOutputArray() = False Then Exit Sub
       OutputLine = ""
 
       For I = 1 To NumOutputArrayLines
@@ -485,4 +632,9 @@ Public Class frmDataEntry
 
    End Sub
 
+   Private Sub txtDateFormat_TextChanged(sender As Object, e As EventArgs) Handles txtDateFormat.TextChanged
+
+      Fields.FieldArray(CurrentField).DateFormat = sender.text
+
+   End Sub
 End Class
