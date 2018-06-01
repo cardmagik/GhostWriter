@@ -276,11 +276,11 @@ Public Class frmDataEntry
 
       If Fields.FieldArray(sender.name).SuppressLine = True Then chkSuppressLine.Checked = True
       Select Case UCase(Fields.FieldArray(sender.name).CaseFormat)
-         Case Is = "LC"
+         Case Is = "LC", "L"
             radioLC.Checked = True
-         Case Is = "UC"
+         Case Is = "UC", "U"
             radioUC.Checked = True
-         Case Is = "PC"
+         Case Is = "PC", "P"
             radioPC.Checked = True
          Case Else
             radioIgnoreCase.Checked = True
@@ -377,6 +377,8 @@ Public Class frmDataEntry
 
       If ValidateFields() = True Then
          ReplaceFieldValues()
+         ProcessIndentCommands()
+
       Else
          Return False
       End If
@@ -437,11 +439,11 @@ Public Class frmDataEntry
 
                '    If Case is LC, UC, or PC, capitalize accordingly
                Select Case UCase(Fields.FieldArray(Element.name).CaseFormat)
-                  Case Is = "LC"
+                  Case Is = "LC", "L"
                      Fields.FieldArray(Element.name).FieldValue = LCase(Fields.FieldArray(Element.name).FieldValue)
-                  Case Is = "UC"
+                  Case Is = "UC", "U"
                      Fields.FieldArray(Element.name).FieldValue = UCase(Fields.FieldArray(Element.name).FieldValue)
-                  Case Is = "PC"
+                  Case Is = "PC", "P"
                      Fields.FieldArray(Element.name).FieldValue = StrConv(Fields.FieldArray(Element.name).FieldValue, VbStrConv.ProperCase)
                   Case Else
                      ' do nothing
@@ -529,8 +531,10 @@ Public Class frmDataEntry
                
             End If
 
-            If count > 10 Then
+            ' This is to stop a runaway loop - probably never necessary - will stop with 100 fields in a line
+            If count > 100 Then
                'debug.print("Reached count of 10 and exiting loop")
+               MsgBox("Reached Field count of 100 on one line and exiting")
 
                Exit While
             End If
@@ -558,6 +562,19 @@ Public Class frmDataEntry
          End If
       Next
    End Function
+
+   Sub ProcessIndentCommands()
+
+      Dim commandstart As Integer = 0
+      Dim commandlength As Integer = 0
+
+      For i As Integer = 1 To NumOutputArrayLines
+         Debug.Print("Processing line " & OutputArray(i))
+         Debug.Print("Command " & GetCommandString(OutputArray(i), commandstart, commandlength))
+
+      Next i
+
+   End Sub
 
    Private Sub btnSendToFile_Click(sender As Object, e As EventArgs) Handles btnSendToFile.Click
 

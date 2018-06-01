@@ -303,12 +303,15 @@ Public Class clsFields
          Return False
       End If
 
-      ' CaseFormat As String can be U/L/P or blank
-      If Not (UCase(CaseFormat) = "U" Or _
+      ' CaseFormat As String can be U/L/P/UC/LC/PC or blank
+      If Not (UCase(CaseFormat) = "UC" Or _
+              UCase(CaseFormat) = "LC" Or _
+              UCase(CaseFormat) = "PC" Or _
+              UCase(CaseFormat) = "U" Or _
               UCase(CaseFormat) = "L" Or _
               UCase(CaseFormat) = "P" Or _
               Trim(CaseFormat) = "") Then
-         Debug.Print("Case Format needs to be blank, L, U, or P - instead it's " & CaseFormat)
+         Debug.Print("In clsFields -Case Format needs to be blank, LC/L, UC/U, or PC/P - instead it's " & CaseFormat)
          Return False
       End If
 
