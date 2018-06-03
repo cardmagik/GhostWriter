@@ -38,7 +38,7 @@ Public Class frmDataEntry
    Dim OutputArray(MaxOutputArrayLines) As String
    Dim NumOutputArrayLines As Integer = 0
 
-   Dim Fields As clsFields
+   Dim Fields As clsCommands
 
    ' Variables for putting fields on screen
    Dim CurrentHorizontal As Integer = 5
@@ -189,7 +189,7 @@ Public Class frmDataEntry
          Fields = Nothing
       End If
 
-      Fields = New clsFields
+      Fields = New clsCommands
       Fields.ExtractFields(OriginalGhostArray, NumOriginalGhostArrayLines)
 
    End Sub
@@ -251,7 +251,7 @@ Public Class frmDataEntry
          FieldTextBox.Select()
       End If
 
-      AddHandler FieldTextBox.MouseHover, AddressOf TextBoxHover
+      AddHandler FieldTextBox.GotFocus, AddressOf TextBoxHover
 
    End Sub
 
@@ -378,7 +378,9 @@ Public Class frmDataEntry
       If ValidateFields() = True Then
          ReplaceFieldValues()
          ProcessIndentCommands()
-
+         ProcessAlignDownCommands()
+         ProcessAlignUpCommands()
+         ProcessFlowerBoxComamnds()
       Else
          Return False
       End If
@@ -386,7 +388,7 @@ Public Class frmDataEntry
       Return True
 
    End Function
-
+ 
    Function ValidateFields() As Boolean
 
       Dim WorkingValue As String
@@ -495,7 +497,7 @@ Public Class frmDataEntry
          'debug.print("")
          'debug.print("=========================================================")
          'If a field present, find field in field array 
-         While Fields.FieldPresent(WorkingLine, FieldStart, FieldLength, FieldParts) And SuppressLine = False
+         While Fields.CommandPresent("FIELD", WorkingLine, FieldStart, FieldLength, FieldParts) And SuppressLine = False
             count = count + 1
             FieldName = FieldParts(1)
             'debug.print("Input line is " & WorkingLine & " field name is " & FieldName)
@@ -517,18 +519,20 @@ Public Class frmDataEntry
                   End If
                End If
 
-               
+
                'debug.print("Field Start is " & FieldStart & " Field Length is " & FieldLength)
-                  Dim part1 As String
-                  Dim part2 As String
+               Dim part1 As String
+               Dim part2 As String
                'debug.print("123456789 123456789 123456789 123456789")
                'debug.print(WorkingLine)
-                  part1 = Mid(WorkingLine, 1, FieldStart - 1)
-                  part2 = Mid(WorkingLine, FieldStart + FieldLength)
+               part1 = Mid(WorkingLine, 1, FieldStart - 1)
+               part2 = Mid(WorkingLine, FieldStart + FieldLength)
                'debug.print("Part1 is " & part1 & " Part2 is " & part2)
-                  WorkingLine = Mid(WorkingLine, 1, FieldStart - 1) & Fields.FieldArray(FieldIndex).FieldValue & Mid(WorkingLine, FieldStart + FieldLength)
+               WorkingLine = ReplaceStringAtLocation(WorkingLine, Fields.FieldArray(FieldIndex).FieldValue, FieldStart, FieldLength)
+
+               'WorkingLine = Mid(WorkingLine, 1, FieldStart - 1) & Fields.FieldArray(FieldIndex).FieldValue & Mid(WorkingLine, FieldStart + FieldLength)
                'debug.print("New Line is " & WorkingLine)
-               
+
             End If
 
             ' This is to stop a runaway loop - probably never necessary - will stop with 100 fields in a line
@@ -565,14 +569,302 @@ Public Class frmDataEntry
 
    Sub ProcessIndentCommands()
 
-      Dim commandstart As Integer = 0
-      Dim commandlength As Integer = 0
+      Dim CommandStart As Integer = 0
+      Dim CommandLength As Integer = 0
+      Dim FieldParts(20) As String
+      Dim IndentLengthString As String
+      Dim IndentLength As Integer
+      Dim HonorBlanks As String
+      Dim InsertBlanks As String
 
       For i As Integer = 1 To NumOutputArrayLines
-         Debug.Print("Processing line " & OutputArray(i))
-         Debug.Print("Command " & GetCommandString(OutputArray(i), commandstart, commandlength))
-
+         If Fields.CommandPresent("INDENT", OutputArray(i), CommandStart, CommandLength, FieldParts) Then
+            IndentLengthString = FieldParts(1)
+            If IsNumeric(IndentLengthString) Then
+               IndentLength = IndentLengthString
+            Else
+               IndentLength = 0
+            End If
+            HonorBlanks = FieldParts(2)
+            If UCase(HonorBlanks) = "N" Then
+               OutputArray(i) = Trim(OutputArray(i))
+            End If
+            InsertBlanks = Space(IndentLength)
+            OutputArray(i) = ReplaceStringAtLocation(OutputArray(i), InsertBlanks, CommandStart, CommandLength)
+         End If
       Next i
+
+   End Sub
+
+   Sub ProcessAlignDownCommands()
+
+      Dim CommandStart As Integer = 0
+      Dim CommandLength As Integer = 0
+      Dim FieldParts(20) As String
+      Dim IndentLengthString As String
+      Dim IndentLength As Integer
+      Dim HonorBlanks As String
+      Dim InsertBlanks As String
+      Dim TextToAlignTo As String
+      Dim WordNumberString As String
+      Dim WordNumber As Integer
+      Dim NumSpaces As Integer
+
+      For i As Integer = 1 To NumOutputArrayLines
+         If Fields.CommandPresent("ALIGN TO ABOVE", OutputArray(i), CommandStart, CommandLength, FieldParts) Then
+            IndentLengthString = Trim(FieldParts(1))
+            TextToAlignTo = Trim(FieldParts(2))
+            WordNumberString = Trim(FieldParts(3))
+            HonorBlanks = Trim(FieldParts(4))
+
+            If IsNumeric(IndentLengthString) Then
+               IndentLength = IndentLengthString
+            Else
+               IndentLength = 0
+            End If
+
+            If IsNumeric(WordNumberString) Then
+               WordNumber = WordNumberString
+            Else
+               WordNumber = 0
+            End If
+
+            If UCase(HonorBlanks) = "N" Then
+               OutputArray(i) = Trim(OutputArray(i))
+            End If
+
+            ' Everything targets calculating the number of spaces.  If there is no line above, spaces are zero
+            ' Order matters.  Either Text Align is used if present or word number. If text align is present, that is used and not word number string.
+            ' If text align is not present, if word number is present use it.  Once the position above is found, add the number of indent to number of spaces
+            ' Then insert that number of spaces
+
+            NumSpaces = 0
+
+            If i > 1 Then ' Only look above if this is greater than the first line
+               If TextToAlignTo <> "" Then
+                  NumSpaces = InStr(UCase(OutputArray(i - 1)), UCase(TextToAlignTo)) - 1
+               Else
+                  If WordNumber > 0 Then
+                     NumSpaces = GetSpacesBeforeWordNum(OutputArray(i - 1), WordNumber)
+                  Else
+                     NumSpaces = FirstNonBlankPosition(OutputArray(i - 1)) - 1
+                  End If
+               End If
+            End If
+
+            NumSpaces = NumSpaces + IndentLength
+
+            If NumSpaces < 0 Then NumSpaces = 0
+
+            InsertBlanks = Space(NumSpaces)
+            OutputArray(i) = ReplaceStringAtLocation(OutputArray(i), InsertBlanks, CommandStart, CommandLength)
+
+         End If
+      Next i
+
+   End Sub
+
+   Function GetSpacesBeforeWordNum(Instring As String, WordNum As Integer) As Integer
+
+      Dim CurrWord As Integer = 0
+      Dim CharNum As Integer
+      Dim Inword As Boolean
+      Dim WordPosStart As Integer
+
+      GetSpacesBeforeWordNum = 0
+      CharNum = 1
+      Inword = False
+
+      While CurrWord < WordNum And CharNum <= Len(Instring)
+
+         If Mid(Instring, CharNum, 1) = " " Then
+            If Inword Then Inword = False
+         Else
+            If Not Inword Then
+               CurrWord = CurrWord + 1
+               Inword = True
+            End If
+         End If
+
+         CharNum = CharNum + 1
+
+      End While
+
+      WordPosStart = CharNum - 1
+
+      Return WordPosStart - 1
+
+   End Function
+
+   Function FirstNonBlankPosition(InString As String) As Integer
+
+      FirstNonBlankPosition = 0
+      For i As Integer = 1 To Len(InString)
+         If Mid(InString, i, 1) <> " " Then Return i
+      Next
+
+   End Function
+
+
+   Sub ProcessAlignUpCommands()
+
+      Dim CommandStart As Integer = 0
+      Dim CommandLength As Integer = 0
+      Dim FieldParts(20) As String
+      Dim IndentLengthString As String
+      Dim IndentLength As Integer
+      Dim HonorBlanks As String
+      Dim InsertBlanks As String
+      Dim TextToAlignTo As String
+      Dim WordNumberString As String
+      Dim WordNumber As Integer
+      Dim NumSpaces As Integer
+
+      For i As Integer = NumOutputArrayLines To 1 Step -1
+         If Fields.CommandPresent("ALIGN TO BELOW", OutputArray(i), CommandStart, CommandLength, FieldParts) Then
+            IndentLengthString = Trim(FieldParts(1))
+            TextToAlignTo = Trim(FieldParts(2))
+            WordNumberString = Trim(FieldParts(3))
+            HonorBlanks = Trim(FieldParts(4))
+
+            If IsNumeric(IndentLengthString) Then
+               IndentLength = IndentLengthString
+            Else
+               IndentLength = 0
+            End If
+
+            If IsNumeric(WordNumberString) Then
+               WordNumber = WordNumberString
+            Else
+               WordNumber = 0
+            End If
+
+            If UCase(HonorBlanks) = "N" Then
+               OutputArray(i) = Trim(OutputArray(i))
+            End If
+
+            ' Everything targets calculating the number of spaces.  If there is no line above, spaces are zero
+            ' Order matters.  Either Text Align is used if present or word number. If text align is present, that is used and not word number string.
+            ' If text align is not present, if word number is present use it.  Once the position above is found, add the number of indent to number of spaces
+            ' Then insert that number of spaces
+
+            NumSpaces = 0
+
+            If i < NumOutputArrayLines Then ' Only look below if +1 can be done
+               If TextToAlignTo <> "" Then
+                  NumSpaces = InStr(UCase(OutputArray(i + 1)), UCase(TextToAlignTo)) - 1
+               Else
+                  If WordNumber > 0 Then
+                     NumSpaces = GetSpacesBeforeWordNum(OutputArray(i + 1), WordNumber)
+                  Else
+                     NumSpaces = FirstNonBlankPosition(OutputArray(i + 1)) - 1
+                  End If
+               End If
+            End If
+
+            NumSpaces = NumSpaces + IndentLength
+
+            If NumSpaces < 0 Then NumSpaces = 0
+
+            InsertBlanks = Space(NumSpaces)
+            OutputArray(i) = ReplaceStringAtLocation(OutputArray(i), InsertBlanks, CommandStart, CommandLength)
+
+         End If
+      Next i
+   End Sub
+
+   Sub ProcessFlowerBoxComamnds()
+
+      Dim CommandStart As Integer = 0
+      Dim CommandLength As Integer = 0
+      Dim FieldParts(20) As String
+      Dim FlowerBoxStartIndex As Integer
+      Dim FlowerBoxEndIndex As Integer
+      Dim WorkLine As String
+      Dim StartChar As String
+      Dim EndChar As String
+      Dim FillChar As String
+      Dim NumSpacesString As String
+      Dim NumSpaces As Integer
+      Dim BlankString As String
+      Dim LongestLinelength As Integer
+      Dim Fillstring As String
+
+      For i As Integer = 1 To NumOutputArrayLines
+
+         If Fields.CommandPresent("FLOWERBOX START", OutputArray(i), CommandStart, CommandLength, FieldParts) Then
+            Debug.Print("found a flower box start at line " & i)
+            StartChar = FieldParts(1)
+            FillChar = FieldParts(2)
+            EndChar = FieldParts(3)
+            NumSpacesString = FieldParts(4)
+
+            If i < NumOutputArrayLines Then
+               FlowerBoxStartIndex = i
+
+               ' look for end of flowerbox
+               FlowerBoxEndIndex = 0
+               For j As Integer = FlowerBoxStartIndex + 1 To NumOutputArrayLines
+                  If Fields.CommandPresent("FLOWERBOX END", OutputArray(j), CommandStart, CommandLength, FieldParts) Then
+                     Debug.Print("Found flower box end at line " & j)
+                     FlowerBoxEndIndex = j
+                     Exit For
+                  End If
+               Next
+
+               If FlowerBoxEndIndex > 0 Then
+
+                  ' If the start and end of the flowerbox are 1 line apart, remove both of them starting with the end
+                  If FlowerBoxEndIndex - FlowerBoxStartIndex = 1 Then
+                     Debug.Print("Removing flower box lines")
+
+                     RemoveOutputArrayLine(FlowerBoxEndIndex)
+                     RemoveOutputArrayLine(FlowerBoxStartIndex)
+                  Else
+
+                     WorkLine = ""
+
+                     If IsNumeric(NumSpacesString) Then
+                        NumSpaces = NumSpacesString
+                     Else
+                        NumSpaces = 0
+                     End If
+                     BlankString = Space(NumSpaces)
+
+                     LongestLinelength = 0
+
+                     For j As Integer = FlowerBoxStartIndex + 1 To FlowerBoxEndIndex - 1
+                        If Len(Trim(OutputArray(j))) > LongestLinelength Then
+                           LongestLinelength = Len(Trim(OutputArray(j)))
+                        End If
+                     Next
+                     Fillstring = StrDup(LongestLinelength, FillChar)
+
+                     OutputArray(FlowerBoxStartIndex) = BlankString & StartChar & FillChar & Fillstring & FillChar & EndChar
+                     OutputArray(FlowerBoxEndIndex) = OutputArray(FlowerBoxStartIndex)
+
+                     For j As Integer = FlowerBoxStartIndex + 1 To FlowerBoxEndIndex - 1
+
+                        OutputArray(j) = BlankString & StartChar & " " & OutputArray(j) & Space(LongestLinelength - Len(Trim(OutputArray(j)))) & " " & EndChar
+                     Next
+                  End If
+
+
+               End If
+            End If
+         End If
+
+      Next
+
+   End Sub
+
+   Sub RemoveOutputArrayLine(IndexToRemove As Integer)
+
+      For i As Integer = IndexToRemove To NumOutputArrayLines - 1
+         OutputArray(i) = OutputArray(i + 1)
+      Next
+
+      NumOutputArrayLines = NumOutputArrayLines - 1
 
    End Sub
 

@@ -1,10 +1,13 @@
 ﻿Imports System.Text.RegularExpressions
 
-Public Class clsFields
+Public Class clsCommands
 
    Public NumFields As Integer = 0
    Dim MaxFields As String = 100
    Const IncrementFields = 50
+
+   Const CommandStartString = "<?"
+   Const CommandEndString = "?>"
 
    Structure Field
       Public FieldName As String
@@ -14,7 +17,7 @@ Public Class clsFields
       Public SuppressLine As Boolean ' In File Y or N
       Public DateFormat As String ' can be mm/dd/yyyy, dd-mon-yyyy, and many other formats
       Public QuoteFormat As String ' can be SQ/DQ or blank
-      Public CaseFormat As String ' can be U/L/P (propercase)
+      Public CaseFormat As String ' can be UC/U/LC/L/PC/P (propercase)
       Public FieldValue As String
    End Structure
 
@@ -57,7 +60,7 @@ Public Class clsFields
          'Debug.Print("In ExtractFields - Processing line " & WorkingLine)
 
          Dim counter As Integer = 0
-         While FieldPresent(WorkingLine, CommandStart, CommandLength, FieldParts)
+         While CommandPresent("FIELD", WorkingLine, CommandStart, CommandLength, FieldParts)
             counter = counter + 1
             WorkingLine = StripCommand(WorkingLine, CommandStart, CommandLength)
 
@@ -84,6 +87,89 @@ Public Class clsFields
       'DumpFieldArray()
 
    End Sub
+
+   Public Function CommandPresent(CommandToFind As String, Line As String, ByRef CommandStart As Integer, ByRef CommandLength As Integer, ByRef FieldParts() As String) As Boolean
+
+      Dim NoDelimiterString As String
+      Dim StartSearch As Integer
+      Dim RunAwayCount As Integer = 0
+
+      'Debug.Print("Looking for " & CommandToFind & " in " & Line)
+
+      CommandPresent = False
+
+      StartSearch = 1
+
+      NoDelimiterString = GetCommandString(Line, StartSearch, CommandStart, CommandLength)
+
+      While NoDelimiterString <> ""
+         RunAwayCount = RunAwayCount + 1
+         FieldParts = NoDelimiterString.Split(New Char() {":"c})
+         If UCase(FieldParts(0)) = UCase(CommandToFind) Then
+
+            'Debug.Print(Line)
+
+            'Debug.Print("Command " & FieldParts(0) & " number of parts " & FieldParts.Length)
+
+            If FieldParts.Length = NumberOfCommandParts(CommandToFind) Then
+               Return True
+            Else
+               Debug.Print("Expected number of parts was " & NumberOfCommandParts(CommandToFind) & " found " & FieldParts.Length)
+            End If
+
+         End If
+         StartSearch = CommandStart + CommandLength
+         NoDelimiterString = GetCommandString(Line, StartSearch, CommandStart, CommandLength)
+         If RunAwayCount > 20 Then Exit Function
+
+      End While
+
+   End Function
+
+
+   Public Function GetCommandString(InputLine As String, StartSearchInString As Integer, ByRef CommandStartLoc As Integer, ByRef CommandLength As Integer) As String
+
+      Dim CommandEndLoc As Integer = 0
+      Dim InternalLength As Integer
+
+      GetCommandString = ""
+
+      CommandStartLoc = InStr(StartSearchInString, InputLine, CommandStartString)
+
+      If CommandStartLoc > 0 Then
+         CommandEndLoc = InStr(CommandStartLoc + 1, InputLine, CommandEndString)
+         If CommandEndLoc > 0 Then
+            InternalLength = CommandEndLoc - CommandStartLoc - 2
+            CommandLength = CommandEndLoc - CommandStartLoc + 2
+            GetCommandString = Mid(InputLine, CommandStartLoc + 2, InternalLength)
+         End If
+
+      End If
+
+   End Function
+
+   Function NumberOfCommandParts(Command As String) As Integer
+
+      NumberOfCommandParts = 0
+
+      Select Case UCase(Command)
+         Case Is = "FIELD"
+            Return 9
+         Case Is = "INDENT"
+            Return 3
+         Case Is = "ALIGN TO ABOVE"
+            Return 5
+         Case Is = "ALIGN TO BELOW"
+            Return 5
+         Case Is = "FLOWERBOX START"
+            Return 5
+         Case Is = "FLOWERBOX END"
+            Return 1
+         Case Else
+            Return 0
+      End Select
+
+   End Function
 
    Sub SortFieldsByOrder()
       '	Process from currrow = 1 to last entry
@@ -364,22 +450,4 @@ Public Class clsFields
       StripCommand = OutputLine
 
    End Function
-
-   Public Function FieldPresent(Line As String, ByRef CommandStart As Integer, ByRef CommandLength As Integer, ByRef FieldParts() As String) As Boolean
-
-      Dim NoDelimiterString As String
-
-      FieldPresent = False
-      NoDelimiterString = GetCommandString(Line, CommandStart, CommandLength)
-      If NoDelimiterString <> "" Then
-         'Debug.Print("   In FieldPresent - Found command " & NoDelimiterString)
-
-         FieldParts = NoDelimiterString.Split(New Char() {":"c})
-         If UCase(FieldParts(0)) = "FIELD" Then FieldPresent = True
-
-      End If
-
-   End Function
-
-
 End Class

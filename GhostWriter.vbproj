@@ -76,7 +76,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsFields.vb" />
+    <Compile Include="clsCommands.vb" />
     <Compile Include="clsGhost.vb" />
     <Compile Include="clsOpenHauntedHouse.vb" />
     <Compile Include="Configuration.vb" />
