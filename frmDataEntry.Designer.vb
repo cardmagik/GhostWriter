@@ -109,7 +109,7 @@ Partial Class frmDataEntry
       Me.btnSendToClipBoard.Name = "btnSendToClipBoard"
       Me.btnSendToClipBoard.Size = New System.Drawing.Size(168, 33)
       Me.btnSendToClipBoard.TabIndex = 11
-      Me.btnSendToClipBoard.Text = "Send to Clipboard"
+      Me.btnSendToClipBoard.Text = "&Send to Clipboard"
       Me.btnSendToClipBoard.UseVisualStyleBackColor = False
       '
       'btnSendToFile
@@ -122,7 +122,7 @@ Partial Class frmDataEntry
       Me.btnSendToFile.Name = "btnSendToFile"
       Me.btnSendToFile.Size = New System.Drawing.Size(122, 33)
       Me.btnSendToFile.TabIndex = 12
-      Me.btnSendToFile.Text = "Send to File"
+      Me.btnSendToFile.Text = "Send to &File"
       Me.btnSendToFile.UseVisualStyleBackColor = False
       '
       'btnResetFieldDefaults
@@ -135,7 +135,7 @@ Partial Class frmDataEntry
       Me.btnResetFieldDefaults.Name = "btnResetFieldDefaults"
       Me.btnResetFieldDefaults.Size = New System.Drawing.Size(197, 33)
       Me.btnResetFieldDefaults.TabIndex = 13
-      Me.btnResetFieldDefaults.Text = "Reset Field Defaults"
+      Me.btnResetFieldDefaults.Text = "Reset Field &Defaults"
       Me.btnResetFieldDefaults.UseVisualStyleBackColor = False
       '
       'lblOnlineLocal
@@ -380,7 +380,7 @@ Partial Class frmDataEntry
       Me.btnPreview.Name = "btnPreview"
       Me.btnPreview.Size = New System.Drawing.Size(96, 33)
       Me.btnPreview.TabIndex = 15
-      Me.btnPreview.Text = "Preview"
+      Me.btnPreview.Text = "&Preview"
       Me.btnPreview.UseVisualStyleBackColor = False
       '
       'frmDataEntry

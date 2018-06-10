@@ -481,6 +481,7 @@ Public Class frmDataEntry
       Dim FieldParts(20) As String
       Dim FieldIndex As Integer
       Dim SuppressLine As Boolean
+      Dim PriorLineSuppressed As Boolean
 
       NumOutputArrayLines = 0
 
@@ -492,6 +493,8 @@ Public Class frmDataEntry
          FieldName = ""
          FieldStart = 0
          FieldLength = 0
+         PriorLineSuppressed = False
+
          Dim count As Integer = 0
          SuppressLine = False
          'debug.print("")
@@ -514,11 +517,11 @@ Public Class frmDataEntry
                      'debug.print("")
 
                      SuppressLine = True
+                     PriorLineSuppressed = True
                      Exit While
 
                   End If
                End If
-
 
                'debug.print("Field Start is " & FieldStart & " Field Length is " & FieldLength)
                Dim part1 As String
@@ -546,6 +549,14 @@ Public Class frmDataEntry
          End While
 
          If SuppressLine = False Then
+
+            If PriorLineSuppressed = False And NumOutputArrayLines >= 1 Then
+               If Fields.CommandPresent("APPEND", WorkingLine, FieldStart, FieldLength, FieldParts) Then
+                  OutputArray(NumOutputArrayLines) = OutputArray(NumOutputArrayLines) & FieldParts(1)
+                  WorkingLine = ReplaceStringAtLocation(WorkingLine, "", FieldStart, FieldLength)
+               End If
+            End If
+
             NumOutputArrayLines = NumOutputArrayLines + 1
             If NumOutputArrayLines >= MaxOutputArrayLines Then
                MaxOutputArrayLines = MaxOutputArrayLines + LinesIncrement

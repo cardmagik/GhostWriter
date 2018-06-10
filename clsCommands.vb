@@ -165,6 +165,8 @@ Public Class clsCommands
             Return 5
          Case Is = "FLOWERBOX END"
             Return 1
+         Case Is = "APPEND"
+            Return 2
          Case Else
             Return 0
       End Select
