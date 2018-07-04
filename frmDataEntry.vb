@@ -550,7 +550,7 @@ Public Class frmDataEntry
 
          If SuppressLine = False Then
 
-            If PriorLineSuppressed = False And NumOutputArrayLines >= 1 Then
+            If NumOutputArrayLines >= 1 Then
                If Fields.CommandPresent("APPEND", WorkingLine, FieldStart, FieldLength, FieldParts) Then
                   OutputArray(NumOutputArrayLines) = OutputArray(NumOutputArrayLines) & FieldParts(1)
                   WorkingLine = ReplaceStringAtLocation(WorkingLine, "", FieldStart, FieldLength)
@@ -827,7 +827,7 @@ Public Class frmDataEntry
 
                   ' If the start and end of the flowerbox are 1 line apart, remove both of them starting with the end
                   If FlowerBoxEndIndex - FlowerBoxStartIndex = 1 Then
-                     Debug.Print("Removing flower box lines")
+                     'Debug.Print("Removing flower box lines")
 
                      RemoveOutputArrayLine(FlowerBoxEndIndex)
                      RemoveOutputArrayLine(FlowerBoxStartIndex)
