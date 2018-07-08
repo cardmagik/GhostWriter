@@ -114,7 +114,7 @@ Public Class frmHauntedHouse
 
    Sub AdjustFontHeightBasedOnText(Text As String, ByRef Height As Integer, ByRef FontSize As Integer, ByRef ReverseTop As Integer)
 
-      Height = 25
+      Height = 30
       FontSize = 12
       ReverseTop = 3
       Select Case Len(Text)
@@ -455,4 +455,7 @@ Public Class frmHauntedHouse
 
    End Function
 
+   Private Sub lblHauntedHouseName_Click(sender As Object, e As EventArgs) Handles lblHauntedHouseName.Click
+
+   End Sub
 End Class

@@ -27,7 +27,7 @@ Module GhostWriterCentralHouseKeeping
 
       OnlineAvailable = GetSharePointDirectoryAndValidate("")
 
-      If OnlineAvailable Then frmVersionControl.CompareVersions(SharePointDirectory)
+      'If OnlineAvailable Then frmVersionControl.CompareVersions(SharePointDirectory) Turned off version control 7/8/2018 because not allowed from SharePoint
 
       LoadSettings()
 
