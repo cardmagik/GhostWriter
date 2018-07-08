@@ -151,7 +151,7 @@ Public Class frmHauntedHouse
 
       Select Case UCase(ButtonText)
          Case Is = "USE"
-            Buttonwidth = 45
+            Buttonwidth = 55
          Case Is = "COPY"
             Buttonwidth = 55
          Case Is = "RENAME"
@@ -159,7 +159,7 @@ Public Class frmHauntedHouse
          Case Is = "DELETE"
             Buttonwidth = 65
          Case Is = "EDIT"
-            Buttonwidth = 45
+            Buttonwidth = 65
          Case Is = "DUPLICATE"
             Buttonwidth = 90
 
