@@ -22,6 +22,7 @@ Partial Class frmPreviewGhostResults
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+      Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmPreviewGhostResults))
       Me.btnClose = New System.Windows.Forms.Button()
       Me.txtPreviewGhost = New System.Windows.Forms.TextBox()
       Me.SuspendLayout()
@@ -60,6 +61,7 @@ Partial Class frmPreviewGhostResults
       Me.ClientSize = New System.Drawing.Size(633, 508)
       Me.Controls.Add(Me.txtPreviewGhost)
       Me.Controls.Add(Me.btnClose)
+      Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
       Me.Name = "frmPreviewGhostResults"
       Me.Text = "Preview Ghost Results"
       Me.ResumeLayout(False)

@@ -22,6 +22,7 @@ Partial Class frmDataEntry
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+      Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDataEntry))
       Me.pnlDataEntryFields = New System.Windows.Forms.Panel()
       Me.lblGhostDescription = New System.Windows.Forms.Label()
       Me.lblMessage = New System.Windows.Forms.Label()
@@ -399,6 +400,7 @@ Partial Class frmDataEntry
       Me.Controls.Add(Me.lblMessage)
       Me.Controls.Add(Me.lblGhostDescription)
       Me.Controls.Add(Me.pnlDataEntryFields)
+      Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
       Me.Name = "frmDataEntry"
       Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
       Me.Text = "Ghost Data Entry"

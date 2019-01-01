@@ -54,7 +54,9 @@
       Dim Char4 As String
       Dim Char5 As String
       Dim Char5_6 As String
+      Dim Char6 As String
       Dim Char7 As String
+      Dim Char8 As String
       Dim DateMask As String
 
       'Debug.Print("Date to Determine is " & DateToDetermine & " len is " & Len(DateToDetermine))
@@ -161,14 +163,19 @@
 
             Char3 = Mid(DateToDetermine, 3, 1)
             Char5 = Mid(DateToDetermine, 5, 1)
-            Char7 = Mid(DateToDetermine, 7, 1)
-            If Char3 = "/" And Char5 = "/" Then
+            Char6 = Mid(DateToDetermine, 6, 1)
+            Char8 = Mid(DateToDetermine, 7, 1)
+            '12/45/7890
+            '1234-67-90
+            'Debug.Print("In length 10 - char3 is " & Char3 & " char6 is " & Char6 & " char8 is " & Char8)
+            If Char3 = "/" And Char6 = "/" Then
                DateMask = "mm/dd/yyyy"
             Else
-               If Char5 = "-" And Char7 = "-" Then
+               If Char6 = "-" And Char8 = "-" Then
                   DateMask = "yyyy-mm-dd"
                Else
                   DateMask = ""
+                  Debug.Print("Did not find datemask")
                End If
             End If
 
@@ -193,6 +200,7 @@
 
       End Select
 
+      'Debug.Print("  Determined DateMask " & DateMask)
       Return DateMask
 
    End Function ' DetermineDateType

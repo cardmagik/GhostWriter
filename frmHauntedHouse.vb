@@ -11,7 +11,7 @@ Public Class frmHauntedHouse
    Const InitialLeft = 10
 
    Const TopAdjustment = 40
-   Const LeftAdjustment = 30
+   'Const LeftAdjustment = 30
 
    Dim CurrentTop As Integer
    Dim CurrentLeft As Integer
@@ -21,7 +21,7 @@ Public Class frmHauntedHouse
 
    Dim ButtonForeColor As Color = Color.DarkBlue
    Dim ButtonBackColor As Color = Color.Silver
-   Const ButtonLeftAdjustment = 30
+   Const ButtonLeftAdjustment = 10
 
    Const LabelWidth = 500
    Dim TextFontSize As Integer
@@ -99,10 +99,10 @@ Public Class frmHauntedHouse
 
          AddButton("Use", AddressOf Me.GhostDataEntry, GhostCount)
          AddButton("Edit", AddressOf Me.EditGhost, GhostCount)
-         'AddButton("Rename", AddressOf Me.RenameGhost, GhostCount)
-         'AddButton("Delete", AddressOf Me.DeleteGhost, GhostCount)
-         'AddButton("Copy", AddressOf Me.CopyGhost, GhostCount)
-         'AddButton("Duplicate", AddressOf Me.DuplicateGhost, GhostCount)
+         AddButton("Ren", AddressOf Me.RenameGhost, GhostCount)
+         AddButton("Del", AddressOf Me.DeleteGhost, GhostCount)
+         AddButton("Copy", AddressOf Me.CopyGhost, GhostCount)
+         AddButton("Dup", AddressOf Me.DuplicateGhost, GhostCount)
 
          ' Must be located before next
          CurrentTop = CurrentTop + TopAdjustment
@@ -154,14 +154,14 @@ Public Class frmHauntedHouse
             Buttonwidth = 55
          Case Is = "COPY"
             Buttonwidth = 55
-         Case Is = "RENAME"
-            Buttonwidth = 75
-         Case Is = "DELETE"
-            Buttonwidth = 65
+         Case Is = "REN"
+            Buttonwidth = 55
+         Case Is = "DEL"
+            Buttonwidth = 55
          Case Is = "EDIT"
             Buttonwidth = 65
-         Case Is = "DUPLICATE"
-            Buttonwidth = 90
+         Case Is = "DUP"
+            Buttonwidth = 55
 
          Case Else
             Buttonwidth = 10
@@ -183,7 +183,7 @@ Public Class frmHauntedHouse
 
       AddHandler GhostButton.Click, ActionAddress
 
-      CurrentLeft = CurrentLeft + Buttonwidth
+      CurrentLeft = CurrentLeft + Buttonwidth + ButtonLeftAdjustment
 
    End Sub
 
@@ -455,7 +455,4 @@ Public Class frmHauntedHouse
 
    End Function
 
-   Private Sub lblHauntedHouseName_Click(sender As Object, e As EventArgs) Handles lblHauntedHouseName.Click
-
-   End Sub
 End Class

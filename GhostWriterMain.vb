@@ -91,13 +91,13 @@ Public Class frmGhostWriter
          Case Is <= 2
             AdjustFont = 20
          Case Is <= 4
-            AdjustFont = 18
-         Case Is <= 5
             AdjustFont = 16
-         Case Is <= 6
+         Case Is <= 5
             AdjustFont = 14
-         Case Is <= 8
+         Case Is <= 6
             AdjustFont = 12
+         Case Is <= 8
+            AdjustFont = 11
          Case Is <= 10
             AdjustFont = 10
          Case Is <= 12

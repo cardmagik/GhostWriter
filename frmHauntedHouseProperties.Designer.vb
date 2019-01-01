@@ -22,6 +22,7 @@ Partial Class frmHauntedHouseProperties
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+      Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmHauntedHouseProperties))
       Me.lblHauntedHouseName = New System.Windows.Forms.Label()
       Me.lstHauntedHouseColorSelection = New System.Windows.Forms.ListBox()
       Me.lblName = New System.Windows.Forms.Label()
@@ -126,6 +127,7 @@ Partial Class frmHauntedHouseProperties
       Me.Controls.Add(Me.lstHauntedHouseColorSelection)
       Me.Controls.Add(Me.lblHauntedHouseName)
       Me.DataBindings.Add(New System.Windows.Forms.Binding("Location", Global.GhostWriter.My.MySettings.Default, "LastFormPosition", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
+      Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
       Me.Location = Global.GhostWriter.My.MySettings.Default.LastFormPosition
       Me.Name = "frmHauntedHouseProperties"
       Me.Text = "Haunted House Properties"

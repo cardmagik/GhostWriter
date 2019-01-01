@@ -37,7 +37,7 @@ Partial Class frmHauntedHouse
       Me.btnCloseForm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
       Me.btnCloseForm.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
       Me.btnCloseForm.ForeColor = System.Drawing.Color.MidnightBlue
-      Me.btnCloseForm.Location = New System.Drawing.Point(623, 416)
+      Me.btnCloseForm.Location = New System.Drawing.Point(847, 415)
       Me.btnCloseForm.Name = "btnCloseForm"
       Me.btnCloseForm.Size = New System.Drawing.Size(93, 33)
       Me.btnCloseForm.TabIndex = 5
@@ -50,7 +50,7 @@ Partial Class frmHauntedHouse
       Me.pnlGhostList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
       Me.pnlGhostList.Location = New System.Drawing.Point(8, 58)
       Me.pnlGhostList.Name = "pnlGhostList"
-      Me.pnlGhostList.Size = New System.Drawing.Size(708, 351)
+      Me.pnlGhostList.Size = New System.Drawing.Size(932, 351)
       Me.pnlGhostList.TabIndex = 6
       '
       'btnNewGhost
@@ -72,7 +72,7 @@ Partial Class frmHauntedHouse
       Me.lblMessage.ForeColor = System.Drawing.Color.Red
       Me.lblMessage.Location = New System.Drawing.Point(195, 412)
       Me.lblMessage.Name = "lblMessage"
-      Me.lblMessage.Size = New System.Drawing.Size(383, 43)
+      Me.lblMessage.Size = New System.Drawing.Size(646, 43)
       Me.lblMessage.TabIndex = 8
       Me.lblMessage.Text = "If you see this, the system is broken - resistance is futile"
       Me.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -82,7 +82,7 @@ Partial Class frmHauntedHouse
       Me.lblInstructions.AutoSize = True
       Me.lblInstructions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
       Me.lblInstructions.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-      Me.lblInstructions.Location = New System.Drawing.Point(103, 35)
+      Me.lblInstructions.Location = New System.Drawing.Point(212, 35)
       Me.lblInstructions.Name = "lblInstructions"
       Me.lblInstructions.Size = New System.Drawing.Size(510, 20)
       Me.lblInstructions.TabIndex = 10
@@ -92,9 +92,9 @@ Partial Class frmHauntedHouse
       '
       Me.lblHauntedHouseName.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
       Me.lblHauntedHouseName.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-      Me.lblHauntedHouseName.Location = New System.Drawing.Point(12, 4)
+      Me.lblHauntedHouseName.Location = New System.Drawing.Point(8, 4)
       Me.lblHauntedHouseName.Name = "lblHauntedHouseName"
-      Me.lblHauntedHouseName.Size = New System.Drawing.Size(704, 23)
+      Me.lblHauntedHouseName.Size = New System.Drawing.Size(932, 23)
       Me.lblHauntedHouseName.TabIndex = 11
       Me.lblHauntedHouseName.Text = "Haunted House Name"
       Me.lblHauntedHouseName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -104,7 +104,7 @@ Partial Class frmHauntedHouse
       Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
       Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
       Me.BackColor = System.Drawing.Color.OldLace
-      Me.ClientSize = New System.Drawing.Size(728, 461)
+      Me.ClientSize = New System.Drawing.Size(947, 461)
       Me.Controls.Add(Me.lblHauntedHouseName)
       Me.Controls.Add(Me.lblInstructions)
       Me.Controls.Add(Me.lblMessage)

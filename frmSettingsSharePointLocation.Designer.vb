@@ -22,6 +22,7 @@ Partial Class frmSettingsSharePointLocation
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+      Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsSharePointLocation))
       Me.txtSharePointLocation = New System.Windows.Forms.TextBox()
       Me.lblSharePointLocation = New System.Windows.Forms.Label()
       Me.lblMessage = New System.Windows.Forms.Label()
@@ -99,6 +100,7 @@ Partial Class frmSettingsSharePointLocation
       Me.Controls.Add(Me.lblSharePointLocation)
       Me.Controls.Add(Me.txtSharePointLocation)
       Me.DataBindings.Add(New System.Windows.Forms.Binding("Location", Global.GhostWriter.My.MySettings.Default, "LastFormPosition", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
+      Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
       Me.Location = Global.GhostWriter.My.MySettings.Default.LastFormPosition
       Me.Name = "frmSettingsSharePointLocation"
       Me.Text = "SharePoint Directory Location"
